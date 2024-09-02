@@ -5,15 +5,26 @@ import Header from './Header.js';
 
 function Register() {
 
-    let state = {
-        fname:"", 
-        lname: "",
-        username: "", 
-        password: "",
-    }
+    const registerClick = async () => {
+        const body = {
+            fname: document.getElementById("fnameControl").value, 
+            lname: document.getElementById("lnameControl").value,
+            username: document.getElementById("usernameControl").value,
+            password: document.getElementById("passwordControl").value,
+        };
 
-    const registerClick = () => {
-    }
+        const response = await fetch("http://localhost:8080/register", {
+            body: JSON.stringify({
+                fname: document.getElementById("fnameControl").value, 
+                lname: document.getElementById("lnameControl").value,
+                username: document.getElementById("usernameControl").value,
+                password: document.getElementById("passwordControl").value,
+            }), 
+            method: "POST",
+            headers: {"Content-Type": "application/json"}
+        });
+        console.log(response);
+    };
 
     return (
         <div>
@@ -27,24 +38,24 @@ function Register() {
                             <Form>
                                 <Form.Group className="mb-3" controlId="formFName">
                                     <Form.Label>First name</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter first name" value={state.fname}/>
+                                    <Form.Control type="text" placeholder="Enter first name" id="fnameControl" />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="formLName">
                                     <Form.Label>Last name</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter last name" value={state.lname}/>
+                                    <Form.Control type="text" placeholder="Enter last name" id="lnameControl" />
                                 </Form.Group>
 
                                 <br /><br />
 
                                 <Form.Group className="mb-3" controlId="formUsername">
                                     <Form.Label>Username</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter username" value={state.username}/>
+                                    <Form.Control type="text" placeholder="Enter username" id="usernameControl" />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="formPassword">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" placeholder="Password" value={state.password}/>
+                                    <Form.Control type="password" placeholder="Password" id="passwordControl" />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="formConfirmPassword">
@@ -55,7 +66,7 @@ function Register() {
                                     </Form.Text>
                                 </Form.Group>
 
-                                <Button onClick="" variant="primary" type="submit">
+                                <Button onClick={registerClick} variant="primary">
                                     Submit
                                 </Button>
                             </Form>
