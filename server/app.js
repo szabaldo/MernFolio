@@ -15,15 +15,20 @@ app.use(express.json());
 app.use(cors(corsOptions)); 
 const port = 8080;
 
+app.all('*', (req, res, next) => {
+    console.log(`Incoming ${req.method} request on ${req.url}`);
+    if (req.body) {
+        console.log(`Request body: ${req.body}`);
+    }
+    next();  
+});
+
 app.get('/', (req, res) => {
     res.sendFile(process.env.FRONTEND_DIR + "index.html"); 
     res.sendFile(process.env.FRONTEND_DIR + "bundle.js"); 
 });
 
-app.post('/register', (req, res) => {
-    console.log("Got something"); 
-    console.log(req.method); 
-    console.log(req.url); 
+app.post('/register', (req, res) => { 
     console.log(req.body); 
 });
 
