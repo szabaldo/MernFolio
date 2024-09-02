@@ -1,0 +1,43 @@
+:root {
+    --min-width: 320px;
+    --small-text: 12px;
+    --medium-text: 16px; 
+    --large-text: 24px; 
+    --xl-text: 36px; 
+    --xxl-text: 48px; 
+
+    --bs-primary: "mediumpurple"; 
+}
+
+.min-width {
+    min-width: var(--min-width); 
+}
+
+.min-width-48 { 
+    min-width: calc(var(--min-width) / 2.4);
+}
+
+.small-text {
+    font-size: var(--small-text) !important; 
+}
+
+.medium-text {
+    font-size: var(--medium-text) !important; 
+}
+
+.large-text {
+    font-size: var(--large-text) !important; 
+}
+
+.xl-text {
+    font-size: var(--xl-text) !important; 
+}
+
+.xxl-text {
+    font-size: var(--xxl-text) !important; 
+}
+
+.mw-50 {
+    max-width: 50%;
+}
+
