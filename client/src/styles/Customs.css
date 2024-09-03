@@ -6,7 +6,8 @@
     --xl-text: 36px; 
     --xxl-text: 48px; 
 
-    --bs-primary: "mediumpurple"; 
+    --bg-primary: "mediumpurple"; 
+    --alert-color: rgb(220,53,69); 
 }
 
 .min-width {
@@ -41,3 +42,6 @@
     max-width: 50%;
 }
 
+.border-alert {
+    border-color: var(--alert-color);
+}

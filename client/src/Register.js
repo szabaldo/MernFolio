@@ -1,9 +1,11 @@
 import React from 'react';
+import { useState } from 'react'; 
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Header from './Header.js';
 
 function Register() {
+    const [passwordsMatch, setPasswordsMatch] = useState(true);
 
     const registerClick = async () => {
         const body = {
@@ -11,19 +13,21 @@ function Register() {
             lname: document.getElementById("lnameControl").value,
             username: document.getElementById("usernameControl").value,
             password: document.getElementById("passwordControl").value,
+            passwordConfirm: document.getElementById("passwordConfirmControl").value
         };
 
-        const response = await fetch("http://localhost:8080/register", {
-            body: JSON.stringify({
-                fname: document.getElementById("fnameControl").value, 
-                lname: document.getElementById("lnameControl").value,
-                username: document.getElementById("usernameControl").value,
-                password: document.getElementById("passwordControl").value,
-            }), 
-            method: "POST",
-            headers: {"Content-Type": "application/json"}
-        });
-        console.log(response);
+        setPasswordsMatch(body.password === body.passwordConfirm);
+        if (!passwordsMatch) {
+            document.getElementById("passwordControl").classList.add("border-alert");
+            document.getElementById("passwordConfirmControl").classList.add("border-alert");
+        } else {
+            const response = await fetch("http://localhost:8080/register", {
+                body: JSON.stringify(body), 
+                method: "POST",
+                headers: {"Content-Type": "application/json"}
+            });
+            console.log(response);
+        }
     };
 
     return (
@@ -53,14 +57,15 @@ function Register() {
                                     <Form.Control type="text" placeholder="Enter username" id="usernameControl" />
                                 </Form.Group>
 
+                                {!passwordsMatch && <div><br/><h3 className="text-danger large-text">Your passwords don't match!</h3></div>}
                                 <Form.Group className="mb-3" controlId="formPassword">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="password" placeholder="Password" id="passwordControl" />
+                                    <Form.Control type="password" placeholder="Password" id="passwordControl" className={!passwordsMatch && "border-alert"} />
                                 </Form.Group>
 
                                 <Form.Group className="mb-3" controlId="formConfirmPassword">
                                     <Form.Label>Confirm password</Form.Label>
-                                    <Form.Control type="password" placeholder="Confirm password" />
+                                    <Form.Control type="password" placeholder="Confirm password" id="passwordConfirmControl" className={!passwordsMatch && "border-alert"} />
                                     <Form.Text className="text-danger">
                                         This site is not secure! DO NOT use a real password.
                                     </Form.Text>

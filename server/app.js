@@ -18,7 +18,8 @@ const port = 8080;
 app.all('*', (req, res, next) => {
     console.log(`Incoming ${req.method} request on ${req.url}`);
     if (req.body) {
-        console.log(`Request body: ${req.body}`);
+        console.log("Request body: ");
+        console.log(req.body);
     }
     next();  
 });
@@ -29,7 +30,10 @@ app.get('/', (req, res) => {
 });
 
 app.post('/register', (req, res) => { 
-    console.log(req.body); 
+});
+
+app.post('/login', (req, res) => { 
+    
 });
 
 app.listen(port, () => {
