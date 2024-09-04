@@ -3,11 +3,23 @@ const fs = require('node:fs');
 const express = require('express'); 
 const cors = require('cors'); 
 const credentials = require('./credentials.js'); 
+const session = require('express-session'); 
 require('dotenv').config(); 
 
 const corsOptions = {
     origin: 'http://localhost:3000',
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'], 
+    credentials: true
+}
+
+const sessionOptions = {
+    secret: 'my-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { 
+        secure: false,
+    }
+
 }
 
 const cred = new credentials.Credentials(); 
@@ -16,6 +28,7 @@ const app = express();
 app.use(express.static(process.env.FRONTEND_DIR))
 app.use(express.json()); 
 app.use(cors(corsOptions)); 
+app.use(session(sessionOptions))
 const port = 8080;
 
 app.all('*', (req, res, next) => {
@@ -56,6 +69,9 @@ app.post('/login', async (req, res) => {
         if (await cred.isPasswordCorrect(req.body.username, req.body.password)) {
             const message = `Logging in as ${req.body.username}`;
             console.log(message); 
+            req.session.user = req.body.username; 
+            console.log("test" + req.session.user)
+            req.session.save(); 
             res.status(200).json({message: message}); 
         } else {
             const message = "Incorrect password; try again.";

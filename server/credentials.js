@@ -72,6 +72,18 @@ class Credentials {
             console.log(result); 
         });
     }
+
+    requireAuth(req, res, next) {
+        if (req.session.user) {
+            next();
+        } else {
+            res.redirect('/login');
+        }
+    }
+
+    // async getSessionId() {
+    //     return await uuidv4(); 
+    // }
 }
 
 exports.Credentials = Credentials;

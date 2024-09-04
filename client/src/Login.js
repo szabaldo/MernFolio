@@ -1,13 +1,14 @@
-import React from 'react';
-import { useState } from 'react'; 
+import React, { useState, useContext } from 'react';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom';
 import Header from './Header.js'; 
+import { UserContext } from './App.js'; 
 
 function Login() {
     const [usernameExists, setUsernameExists] = useState(true); 
     const [correctPassword, setCorrectPassword] = useState(true); 
     const [redirect, setRedirect] = useState(false); 
+    const {user, setUser} = useContext(UserContext); 
 
     const onUsernameChange = () => {
         setUsernameExists(true); 
@@ -26,11 +27,13 @@ function Login() {
         const response = await fetch("http://localhost:8080/login", {
             body: JSON.stringify(body), 
             method: "POST",
-            headers: {"Content-Type": "application/json"}
+            headers: {"Content-Type": "application/json"}, 
+            credentials: "include"
         });
         const data = await response.json();  
         console.log(data); 
         if (response.status == 200) {
+            setUser(body.username); 
             setRedirect(true); 
         } else if (response.status == 401) {
             if (data['status'] == "username not found") {

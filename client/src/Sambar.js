@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
+import { UserContext } from './App.js'; 
 
 function Sambar() {
+  const {user, setUser} = useContext(UserContext); 
+  
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
@@ -21,7 +24,7 @@ function Sambar() {
             </Navbar.Collapse>
           </Col> */}
           <Col className={"d-flex flex-row-reverse"}>
-            <Link className="d-flex align-items-center nav-link" to="/login">Log in</Link>
+            <Link className="d-flex align-items-center nav-link" to="/login">{!user ? "Log in" : user}</Link>
           </Col>
         </Row>
       </Container>
