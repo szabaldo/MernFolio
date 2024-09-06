@@ -45,3 +45,8 @@
 .border-alert {
     border-color: var(--alert-color);
 }
+
+.no-hover:hover {
+    background-color: transparent !important;
+    border-color: transparent !important;
+}

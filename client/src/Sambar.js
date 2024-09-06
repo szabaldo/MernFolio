@@ -27,7 +27,7 @@ function Sambar() {
           <h5 className="d-flex align-items-center nav-link flex-row-reverse large-text" to="/login">{user.fname}</h5>
         </Col>
         <Col>
-          <Button className="d-flex align-items-center nav-link h-100" onClick={logoutClick}>Log out</Button>
+          <Button className="d-flex align-items-center nav-link h-100 no-hover" onClick={logoutClick}>Log out</Button>
         </Col>
       </Row>
     </Container>)

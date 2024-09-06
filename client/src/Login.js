@@ -73,7 +73,7 @@ function Login() {
                                     </Form.Text>
                                 </Form.Group>
                                 <Button onClick={loginClick}variant="primary">
-                                    Submit
+                                    Login
                                 </Button>
                             </Form>
                         </Row>
