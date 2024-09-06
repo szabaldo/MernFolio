@@ -33,7 +33,7 @@ function Login() {
         const data = await response.json();  
         console.log(data); 
         if (response.status == 200) {
-            setUser(body.username); 
+            setUser(data.user); 
             setRedirect(true); 
         } else if (response.status == 401) {
             if (data['status'] == "username not found") {

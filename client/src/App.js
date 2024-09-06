@@ -1,11 +1,26 @@
-import React, { createContext, useState } from 'react'; 
+import React, { createContext, useState, useEffect } from 'react'; 
 import Sambar from './Sambar';
 import MainPage from './MainPage';
 
 const UserContext = createContext(); 
 
 function App() {
-  const [user, setUser] = useState(); 
+  const [user, setUser] = useState(null);
+
+  const getUserSession = async () => {
+    const response = await fetch("http://localhost:8080/user", {
+      method: "GET",
+      headers: {"Content-Type": "application/json"}, 
+      credentials: "include"
+    });
+    const res = await response.json();
+    console.log(res);
+    if (res.user) setUser(res.user);
+  };
+
+  useEffect( () => { 
+    getUserSession(); 
+  }, []);
 
   return (
     <UserContext.Provider value={{user, setUser}} className="min-width">

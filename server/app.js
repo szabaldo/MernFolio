@@ -69,10 +69,13 @@ app.post('/login', async (req, res) => {
         if (await cred.isPasswordCorrect(req.body.username, req.body.password)) {
             const message = `Logging in as ${req.body.username}`;
             console.log(message); 
-            req.session.user = req.body.username; 
-            console.log("test" + req.session.user)
+            const credentials = await cred.getCredentials(req.body.username); 
+            req.session.user = credentials;
+            // req.session.username = credentials.username; 
+            // req.session.fname = credentials.fname;
+            // req.session.lname = credentials.lname;
             req.session.save(); 
-            res.status(200).json({message: message}); 
+            res.status(200).json({user: req.session.user, message: message}); 
         } else {
             const message = "Incorrect password; try again.";
             console.log(message); 
@@ -83,6 +86,23 @@ app.post('/login', async (req, res) => {
         console.log(message); 
         res.status(401).json({status: "username not found", message: message});
     }
+});
+
+app.get('/user', (req, res) => {
+    if (req.session.user) {
+        console.log("req.session below: ")
+        console.log(req.session.user); 
+        res.json({user: req.session.user, message: "got session"});
+    } else {
+        res.status(404).json({message: "no session"})
+    }
+});
+
+app.get('/logout', (req, res) => {
+    const message = "session destroyed"; 
+    console.log(message); 
+    req.session.destroy(); 
+    res.json({message: message});
 });
 
 app.listen(port, () => {

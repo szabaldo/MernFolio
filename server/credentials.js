@@ -81,9 +81,24 @@ class Credentials {
         }
     }
 
-    // async getSessionId() {
-    //     return await uuidv4(); 
-    // }
+    async getCredentials(username) {
+        const query = `
+            SELECT *
+            FROM mernfoliodb.users
+            WHERE username = \"${username}\";
+        `;
+        console.log(`Query: ${query}`);
+        let promise = new Promise( (resolve) => {
+            this.con.query(query, (err, result) => {
+                if (err) console.error(error); 
+                console.log(`Query returned: ${JSON.stringify(result)}`);  
+                delete result[0].id;
+                delete result[0].password;
+                resolve(result[0]);  
+            });
+        }) 
+        return promise;
+    }
 }
 
 exports.Credentials = Credentials;

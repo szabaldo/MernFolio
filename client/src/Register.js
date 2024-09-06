@@ -1,6 +1,6 @@
 import React from 'react';
-import { useState, useEffect } from 'react'; 
-import { Container, Row, Col, Form, Button } from 'react-bootstrap';
+import { useState } from 'react'; 
+import { Container, Row, Form, Button } from 'react-bootstrap';
 import { Navigate } from 'react-router-dom'; 
 import Header from './Header.js';
 
