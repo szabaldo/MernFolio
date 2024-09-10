@@ -55,8 +55,7 @@ function Home() {
             {user && commentBox}
             <Container>
                 <Row className="py-5">
-                    <CommentsPane>
-                    </CommentsPane>
+                    <CommentsPane status="approved" />
                 </Row>
             </Container>
             <Outlet />

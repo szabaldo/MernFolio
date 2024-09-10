@@ -13,7 +13,7 @@ import './styles/Customs.css';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
-        <React.StrictMode>
+        {/* <React.StrictMode> */}
             <Routes>
                 <Route path="/" element={<App />}>
                     <Route index element={<Home />} />
@@ -22,6 +22,6 @@ root.render(
                     <Route path="admin" element={<Admin />} />
                 </Route>
             </Routes>
-        </React.StrictMode>
+        {/* </React.StrictMode> */}
     </BrowserRouter>
 );

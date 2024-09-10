@@ -135,6 +135,20 @@ class Credentials {
         }) 
         return promise;
     }
+
+    async approveComment(commentId) {
+        const query = `
+            UPDATE mernfoliodb.comments 
+            SET status = "approved"
+            WHERE id = \"${commentId}\";
+        `;
+        console.log(`Query: ${query}`); 
+        this.con.query(query, (err, result, fields) => {
+            if (err) console.error(`SQL error: ${err}`); 
+            console.log(result); 
+        });
+    }
+
 }
 
 exports.Credentials = Credentials;

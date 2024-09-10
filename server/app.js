@@ -118,6 +118,13 @@ app.post('/get-comments', async (req, res) => {
     res.json({comments: comments}); 
 });
 
+app.post('/approve', async (req, res) => {
+    cred.approveComment(req.body.commentId);
+    const message = `comment approved`;
+    console.log(message); 
+    res.json({message: message}); 
+});
+
 app.listen(port, () => {
     console.log(`Listening on port ${port}`);
 });
