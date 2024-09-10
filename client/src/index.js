@@ -5,6 +5,7 @@ import App from './App';
 import Home from './Home';
 import Login from './Login'; 
 import Register from './Register';
+import Admin from './Admin';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/Customs.css';
 
@@ -18,6 +19,7 @@ root.render(
                     <Route index element={<Home />} />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
+                    <Route path="admin" element={<Admin />} />
                 </Route>
             </Routes>
         </React.StrictMode>

@@ -62,7 +62,8 @@ class Credentials {
                 \"${username}\", 
                 \"${secPassword}\", 
                 \"${fname}\", 
-                \"${lname}\"
+                \"${lname}\", 
+                \"0\"
             );
         `;
         console.log(`Query: ${query}`); 
@@ -92,9 +93,44 @@ class Credentials {
             this.con.query(query, (err, result) => {
                 if (err) console.error(error); 
                 console.log(`Query returned: ${JSON.stringify(result)}`);  
-                delete result[0].id;
                 delete result[0].password;
                 resolve(result[0]);  
+            });
+        }) 
+        return promise;
+    }
+
+    async storeComment(comment, userId) {
+        const id = await uuidv4();
+        const query = `
+            INSERT INTO mernfoliodb.comments 
+            VALUES (
+                \"${id}\",
+                \"${comment}\", 
+                \"pending\", 
+                \"${userId}\"
+            );
+        `;
+        console.log(`Query: ${query}`); 
+        this.con.query(query, (err, result, fields) => {
+            if (err) console.error(`SQL error: ${err}`); 
+            console.log(result); 
+        });
+    }
+
+    async fetchComments(status) {
+        const query = `
+            SELECT comments.id, comment, status, userid, username, fname, lname, isadmin
+            FROM mernfoliodb.comments 
+            INNER JOIN users on comments.userid=users.id
+            WHERE status = "${status}";
+        `;
+        console.log(`Query: ${query}`); 
+        let promise = new Promise( (resolve) => {
+            this.con.query(query, (err, result) => {
+                if (err) console.error(error); 
+                console.log(`Query returned: ${JSON.stringify(result)}`);  
+                resolve(result);  
             });
         }) 
         return promise;

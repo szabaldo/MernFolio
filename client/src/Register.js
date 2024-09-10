@@ -46,7 +46,7 @@ function Register() {
             />
             <Container>
                 <Row>
-                    <Container className="mw-50">
+                    <Container className="inner-width">
                         <Row>
                             <Form>
                                 <Form.Group className="mb-3" controlId="formFname">

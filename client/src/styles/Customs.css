@@ -1,5 +1,7 @@
 :root {
     --min-width: 320px;
+    --inner-width: 512px; 
+    --max-width: 1024px;
     --small-text: 12px;
     --medium-text: 16px; 
     --large-text: 24px; 
@@ -16,6 +18,14 @@
 
 .min-width-48 { 
     min-width: calc(var(--min-width) / 2.4);
+}
+
+.inner-width {
+    max-width: var(--inner-width); 
+}
+
+.max-width {
+    max-width: var(--max-width); 
 }
 
 .small-text {
@@ -36,10 +46,6 @@
 
 .xxl-text {
     font-size: var(--xxl-text) !important; 
-}
-
-.mw-50 {
-    max-width: 50%;
 }
 
 .border-alert {

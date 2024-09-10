@@ -101,8 +101,21 @@ app.get('/user', (req, res) => {
 app.get('/logout', (req, res) => {
     const message = "session destroyed"; 
     console.log(message); 
-    req.session.destroy(); 
+    req.session.destroy();  
     res.json({message: message});
+});
+
+app.post('/comment', (req, res) => {
+    const message = `Comment stored for review by admin: ${req.body.comment}`;
+    console.log(message); 
+    cred.storeComment(req.body.comment, req.session.user.id); 
+    res.json({message: message}); 
+});
+
+app.post('/get-comments', async (req, res) => {
+    const comments = await cred.fetchComments(req.body.status); 
+    console.log(comments); 
+    res.json({comments: comments}); 
 });
 
 app.listen(port, () => {

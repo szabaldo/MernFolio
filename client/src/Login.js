@@ -55,7 +55,7 @@ function Login() {
             />
             <Container>
                 <Row>
-                    <Container className="mw-50">
+                    <Container className="inner-width">
                         <Row>
                             <Form>
                                 {!usernameExists && <div><br/><h3 className="text-danger large-text">Username not found.</h3></div>}
