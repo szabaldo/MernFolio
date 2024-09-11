@@ -76,56 +76,6 @@ function CommentsPane({ status, commentButtons = false }) {
         setComments(newComments); 
     }
 
-    // useEffect(() => {
-    //     async function fetchComments() {
-    //         const response = await fetch("http://localhost:8080/get-comments", {
-    //             body: JSON.stringify({ status: status }),
-    //             method: "POST",
-    //             headers: { "Content-Type": "application/json" },
-    //             credentials: "include"
-    //         });
-    //         const res = await response.json();
-    //         console.log("");
-    //         console.log("Comments fetched: ");
-    //         console.log(res.comments);
-    //         // comments.current = res.comments; 
-    //     }
-    //     const comments = fetchComments();
-    //     console.log(comments); 
-    //     if (comments.length > 0) {
-    //         const c = comments.map((comment) =>
-    //             <Row className="m-3" key={comment.id} id={"row" + comment.id}>
-    //                 <Col>
-    //                     <Comment comment={comment} />
-    //                 </Col>
-    //                 {commentButtons && (<Col xs={3} className="d-flex align-items-center flex-row-reverse">
-    //                     <Container>
-    //                         {(comment.status != "approved") && (<Row className="m-1">
-    //                             <Button variant="success" className="small-text" onClick={(e) => { approveClick(e) }} id={comment.id}>Approve</Button>
-    //                         </Row>)}
-    //                         {(comment.status != "hidden") && (<Row className="m-1">
-    //                             <Button variant="secondary" className="small-text" onClick={(e) => { hideClick(e) }} id={comment.id}>Hide</Button>
-    //                         </Row>)}
-    //                         <Row className="m-1">
-    //                             <Button variant="danger" className="small-text" onClick={(e) => { deleteClick(e) }} id={comment.id}>Delete</Button>
-    //                         </Row>
-    //                     </Container>
-    //                 </Col>)}
-    //             </Row>
-    //         );
-    //         // setCommentsElements(c);
-    //         console.log("");
-    //         console.log("commentsElements: ");
-    //         console.log(commentsElements);
-
-    //         console.log("");
-    //         console.log("c: ");
-    //         console.log(c);
-    //         if (commentsElements != c) console.log("oka!"); setCommentsElements(c);
-    //         // if (comments.current != c) comments.current = c;
-    //     }
-    // }, []);
-
     useEffect(() => {
         async function fetchComments() {
             const response = await fetch("http://localhost:8080/get-comments", {

@@ -101,6 +101,8 @@ class Credentials {
     }
 
     async storeComment(comment, userId) {
+        const date = Date.now(); 
+        console.log(date); 
         const id = await uuidv4();
         const query = `
             INSERT INTO mernfoliodb.comments 
@@ -108,7 +110,8 @@ class Credentials {
                 \"${id}\",
                 \"${comment}\", 
                 \"pending\", 
-                \"${userId}\"
+                \"${userId}\", 
+                \"${date}\"
             );
         `;
         console.log(`Query: ${query}`); 
@@ -127,7 +130,7 @@ class Credentials {
                 queryStatus = "WHERE status = \"approved\"";
         } 
         const query = `
-            SELECT comments.id, comment, status, userid, username, fname, lname, isadmin
+            SELECT comments.id, comment, status, userid, dateposted, username, fname, lname, isadmin
             FROM mernfoliodb.comments 
             INNER JOIN users on comments.userid=users.id
             ${queryStatus};

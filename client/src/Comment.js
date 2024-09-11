@@ -24,6 +24,16 @@ function Comment({comment}) {
         }
     }
 
+    const date = new Date(comment.dateposted)
+        .toLocaleString(
+            'default', 
+            {
+                month: 'short', 
+                day: "numeric", 
+                year: "numeric"
+            }
+        );
+
     return(
         <div>
             <Container className="p-3 border borer-secondary rounded shadow" style={{backgroundColor: bgColor}}>
@@ -37,12 +47,11 @@ function Comment({comment}) {
                         </Col>
                     )}
                     <Col className="d-flex flex-row-reverse">
-                        <p>Sept. 9, 2024</p>
+                        <p>{date}</p>
                     </Col>
                 </Row>
                 <Row>
                     <h3 className="large-text">{comment.comment}</h3>
-                    <p>{comment.id}</p>
                 </Row>
             </Container>
         </div>
