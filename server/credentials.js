@@ -119,11 +119,18 @@ class Credentials {
     }
 
     async fetchComments(status) {
+        let queryStatus = ""; 
+        switch(status) {
+            case "all": 
+                break;
+            default:    // default is "approved"
+                queryStatus = "WHERE status = \"approved\"";
+        } 
         const query = `
             SELECT comments.id, comment, status, userid, username, fname, lname, isadmin
             FROM mernfoliodb.comments 
             INNER JOIN users on comments.userid=users.id
-            WHERE status = "${status}";
+            ${queryStatus};
         `;
         console.log(`Query: ${query}`); 
         let promise = new Promise( (resolve) => {
@@ -152,6 +159,19 @@ class Credentials {
     async deleteComment(commentId) {
         const query = `
             DELETE FROM mernfoliodb.comments 
+            WHERE id = \"${commentId}\";
+        `;
+        console.log(`Query: ${query}`); 
+        this.con.query(query, (err, result, fields) => {
+            if (err) console.error(`SQL error: ${err}`); 
+            console.log(result); 
+        });
+    }
+
+    async hideComment(commentId) {
+        const query = `
+            UPDATE mernfoliodb.comments 
+            SET status = "hidden"
             WHERE id = \"${commentId}\";
         `;
         console.log(`Query: ${query}`); 

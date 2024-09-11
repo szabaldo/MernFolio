@@ -21,7 +21,7 @@ function Admin() {
                 linkTo={headerOpts.linkTo}
             />
             <Container>
-                <CommentsPane status="pending" commentButtons={true} />
+                <CommentsPane status="all" commentButtons={true} />
             </Container>
 
 

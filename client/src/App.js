@@ -7,18 +7,20 @@ const UserContext = createContext();
 function App() {
   const [user, setUser] = useState(null);
 
-  const getUserSession = async () => {
-    const response = await fetch("http://localhost:8080/user", {
-      method: "GET",
-      headers: {"Content-Type": "application/json"}, 
-      credentials: "include"
-    });
-    const res = await response.json();
-    console.log(res);
-    if (res.user) setUser(res.user);
-  };
-
   useEffect( () => { 
+    async function getUserSession() {
+      const response = await fetch("http://localhost:8080/user", {
+        method: "GET",
+        headers: {"Content-Type": "application/json"}, 
+        credentials: "include"
+      });
+      const res = await response.json();
+      console.log(""); 
+      console.log("User session Received: "); 
+      console.log(res);
+      if (res.user) setUser(res.user);
+    };
+
     getUserSession(); 
   }, []);
 

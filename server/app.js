@@ -71,9 +71,6 @@ app.post('/login', async (req, res) => {
             console.log(message); 
             const credentials = await cred.getCredentials(req.body.username); 
             req.session.user = credentials;
-            // req.session.username = credentials.username; 
-            // req.session.fname = credentials.fname;
-            // req.session.lname = credentials.lname;
             req.session.save(); 
             res.status(200).json({user: req.session.user, message: message}); 
         } else {
@@ -128,6 +125,13 @@ app.post('/approve', async (req, res) => {
 app.delete('/delete', async (req, res) => {
     cred.deleteComment(req.body.commentId);
     const message = `comment deleted`;
+    console.log(message); 
+    res.json({message: message}); 
+});
+
+app.put('/hide', async (req, res) => {
+    cred.hideComment(req.body.commentId);
+    const message = `comment hidden`;
     console.log(message); 
     res.json({message: message}); 
 });
