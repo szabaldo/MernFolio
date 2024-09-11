@@ -149,6 +149,17 @@ class Credentials {
         });
     }
 
+    async deleteComment(commentId) {
+        const query = `
+            DELETE FROM mernfoliodb.comments 
+            WHERE id = \"${commentId}\";
+        `;
+        console.log(`Query: ${query}`); 
+        this.con.query(query, (err, result, fields) => {
+            if (err) console.error(`SQL error: ${err}`); 
+            console.log(result); 
+        });
+    }
 }
 
 exports.Credentials = Credentials;

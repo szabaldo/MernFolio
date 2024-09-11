@@ -7,7 +7,7 @@ const session = require('express-session');
 require('dotenv').config(); 
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: ['http://localhost:3000'],
     allowedHeaders: ['Content-Type', 'Authorization'], 
     credentials: true
 }
@@ -121,6 +121,13 @@ app.post('/get-comments', async (req, res) => {
 app.post('/approve', async (req, res) => {
     cred.approveComment(req.body.commentId);
     const message = `comment approved`;
+    console.log(message); 
+    res.json({message: message}); 
+});
+
+app.delete('/delete', async (req, res) => {
+    cred.deleteComment(req.body.commentId);
+    const message = `comment deleted`;
     console.log(message); 
     res.json({message: message}); 
 });

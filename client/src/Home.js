@@ -20,6 +20,7 @@ function Home() {
         });
         const res = await response.json();
         console.log(res);
+        document.getElementById("commentField").value = ""; 
     }
 
     const commentBox = (
