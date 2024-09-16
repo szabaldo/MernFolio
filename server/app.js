@@ -12,15 +12,6 @@ const corsOptions = {
     credentials: true
 };
 
-// const sessionStoreOptions = {
-//     host: process.env.DATABASE_HOST,
-//     port: process.env.DATABASE_PORT,
-//     user: process.env.DATABASE_USER,
-//     password: process.env.DATABASE_PASSWORD,
-//     database: process.env.DATABASE_NAME,
-// };
-// const sessionStore = new MySqlStore({}, cred.con);
-
 const cred = new credentials.Credentials(); 
 const sessionStore = new MySqlStore({}, cred.con);
 
@@ -32,7 +23,7 @@ const sessionOptions = {
 };
 
 const app = express(); 
-app.use(express.static(process.env.FRONTEND_DIR))
+app.use(express.static(path.join(__dirname, process.env.FRONTEND_DIR)));
 app.use(express.json()); 
 app.use(cors(corsOptions)); 
 app.use(session(sessionOptions))
@@ -44,45 +35,74 @@ sessionStore.onReady().then(() => {
     console.error(error); 
 });
 
+const sendFileOptions = {root: path.join(__dirname, process.env.FRONTEND_DIR)};
+
 app.all('*', (req, res, next) => {
     console.log(`Incoming ${req.method} request on ${req.url}`);
-    if (req.body) {
+    if (JSON.stringify(req.body) !== "{}") {
         console.log("Request body: ");
         console.log(req.body);
     }
     next();  
 });
 
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "index.html")); 
-    res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "bundle.js"));  
+app.get('/', (req, res, next) => {
+    res.sendFile("index.html", sendFileOptions, (err) => {
+        if (err) {
+            console.error(err); 
+            next(err); 
+        } else {
+            console.log("Sent index.html"); 
+        }
+    }); 
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', (req, res, next) => {
     if (req.session.user) {
         res.redirect('/');
     } else {
-        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "index.html")); 
-        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "bundle.js"));
+        res.sendFile("index.html", sendFileOptions, (err) => {
+            if (err) {
+                console.error(err); 
+                next(err); 
+            } else {
+                console.log("Sent index.html"); 
+            }
+        }); 
     }
 });
 
-app.get('/register', (req, res) => {
+app.get('/register', (req, res, next) => {
     if (req.session.user) {
         res.redirect('/');
     } else {
-        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "index.html")); 
-        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "bundle.js"));
+        res.sendFile("index.html", sendFileOptions, (err) => {
+            if (err) {
+                console.error(err); 
+                next(err); 
+            } else {
+                console.log("Sent index.html"); 
+            }
+        }); 
     }  
 });
 
-app.get('/admin', (req, res) => {
-    console.log(`req.session.user?.isadmin == 1: ${req.session.user?.isadmin == 1}`); 
-    if (req.session.user?.isadmin == 1) {
-        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "index.html")); 
-        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "bundle.js"));
+app.get('/admin', (req, res, next) => {
+    if (req.session.user) {
+        if (req.session.user.isadmin == 1) {
+            res.sendFile("index.html", sendFileOptions, (err) => {
+                if (err) {
+                    console.error(err); 
+                    next(err); 
+                } else {
+                    console.log("Sent index.html"); 
+                }
+            }); 
+        } else {
+            res.redirect('/');
+        }
     } else {
-        res.redirect('/');
+        res.redirect('/login');
     }
 });
 
@@ -175,6 +195,10 @@ app.put('/hide', async (req, res) => {
     const message = `comment hidden`;
     console.log(message); 
     res.json({message: message}); 
+});
+
+app.get('/*', (req, res) => {
+    res.status(404).sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "not_found.html")); 
 });
 
 app.listen(port, () => {
