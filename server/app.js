@@ -1,25 +1,20 @@
-const http = require('node:http');
-const fs = require('node:fs');
 const express = require('express'); 
 const cors = require('cors'); 
 const credentials = require('./credentials.js'); 
 const session = require('express-session'); 
 require('dotenv').config(); 
+const path = require('path'); 
 
 const corsOptions = {
-    origin: ['http://localhost:3000'],
+    origin: ['http://localhost:3000'], // TODO: Fix CORS origin
     allowedHeaders: ['Content-Type', 'Authorization'], 
     credentials: true
 }
 
 const sessionOptions = {
-    secret: 'my-secret-key',
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true,
-    cookie: { 
-        secure: false,
-    }
-
+    saveUninitialized: false
 }
 
 const cred = new credentials.Credentials(); 
@@ -29,7 +24,7 @@ app.use(express.static(process.env.FRONTEND_DIR))
 app.use(express.json()); 
 app.use(cors(corsOptions)); 
 app.use(session(sessionOptions))
-const port = 8080;
+const port = process.env.PORT;
 
 app.all('*', (req, res, next) => {
     console.log(`Incoming ${req.method} request on ${req.url}`);
@@ -41,8 +36,36 @@ app.all('*', (req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.sendFile(process.env.FRONTEND_DIR + "index.html"); 
-    res.sendFile(process.env.FRONTEND_DIR + "bundle.js"); 
+    res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "index.html")); 
+    res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "bundle.js"));  
+});
+
+app.get('/login', (req, res) => {
+    if (req.session.user) {
+        res.redirect('/');
+    } else {
+        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "index.html")); 
+        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "bundle.js"));
+    }
+});
+
+app.get('/register', (req, res) => {
+    if (req.session.user) {
+        res.redirect('/');
+    } else {
+        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "index.html")); 
+        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "bundle.js"));
+    }  
+});
+
+app.get('/admin', (req, res) => {
+    console.log(`req.session.user?.isadmin == 1: ${req.session.user?.isadmin == 1}`); 
+    if (req.session.user?.isadmin == 1) {
+        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "index.html")); 
+        res.sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "bundle.js"));
+    } else {
+        res.redirect('/');
+    }
 });
 
 app.post('/register', async (req, res) => { 
@@ -91,7 +114,7 @@ app.get('/user', (req, res) => {
         console.log(req.session.user); 
         res.json({user: req.session.user, message: "got session"});
     } else {
-        res.status(404).json({message: "no session"})
+        res.status(404).json({message: "no session"});
     }
 });
 

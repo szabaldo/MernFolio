@@ -6,10 +6,10 @@ class Credentials {
     con; 
     constructor() {
         const dbOptions = {
-            host: "localhost",
-            user: "root", 
-            password: "root", 
-            database: "mernfoliodb"
+            host: process.env.DATABASE_HOST,
+            user: process.env.DATABASE_USER, 
+            password: process.env.DATABASE_PASSWORD, 
+            database: process.env.DATABASE_NAME
         }
         this.con = mysql.createConnection(dbOptions);
     }
@@ -17,7 +17,7 @@ class Credentials {
     doesUserExist(username) {
         const query = `
             SELECT 1
-            FROM mernfoliodb.users
+            FROM users
             WHERE username = \"${username}\";
         `;
         console.log(`Query: ${query}`);
@@ -35,7 +35,7 @@ class Credentials {
     isPasswordCorrect(username, password) {
         const query = `
             SELECT password
-            FROM mernfoliodb.users
+            FROM users
             WHERE username = \"${username}\";
         `;
         console.log(`Query: ${query}`);
@@ -56,7 +56,7 @@ class Credentials {
         const salt = await bcrypt.genSalt(10); 
         const secPassword = await bcrypt.hash(password, salt); 
         const query = `
-            INSERT INTO mernfoliodb.users 
+            INSERT INTO users 
             VALUES (
                 \"${id}\",
                 \"${username}\", 
@@ -85,7 +85,7 @@ class Credentials {
     async getCredentials(username) {
         const query = `
             SELECT *
-            FROM mernfoliodb.users
+            FROM users
             WHERE username = \"${username}\";
         `;
         console.log(`Query: ${query}`);
@@ -105,7 +105,7 @@ class Credentials {
         console.log(date); 
         const id = await uuidv4();
         const query = `
-            INSERT INTO mernfoliodb.comments 
+            INSERT INTO comments 
             VALUES (
                 \"${id}\",
                 \"${comment}\", 
@@ -131,7 +131,7 @@ class Credentials {
         } 
         const query = `
             SELECT comments.id, comment, status, userid, dateposted, username, fname, lname, isadmin
-            FROM mernfoliodb.comments 
+            FROM comments 
             INNER JOIN users on comments.userid=users.id
             ${queryStatus};
         `;
@@ -148,7 +148,7 @@ class Credentials {
 
     async approveComment(commentId) {
         const query = `
-            UPDATE mernfoliodb.comments 
+            UPDATE comments 
             SET status = "approved"
             WHERE id = \"${commentId}\";
         `;
@@ -161,7 +161,7 @@ class Credentials {
 
     async deleteComment(commentId) {
         const query = `
-            DELETE FROM mernfoliodb.comments 
+            DELETE FROM comments 
             WHERE id = \"${commentId}\";
         `;
         console.log(`Query: ${query}`); 
@@ -173,7 +173,7 @@ class Credentials {
 
     async hideComment(commentId) {
         const query = `
-            UPDATE mernfoliodb.comments 
+            UPDATE comments 
             SET status = "hidden"
             WHERE id = \"${commentId}\";
         `;

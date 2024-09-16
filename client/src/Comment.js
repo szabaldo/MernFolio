@@ -43,7 +43,7 @@ function Comment({comment}) {
                     </Col>
                     {onAdminPage && (
                         <Col>
-                            <h1 className="large-text inverse-shadow">{comment.status.trim()}</h1>
+                            <h1 className="large-text d-flex justify-content-center">{comment.status.trim()}</h1>
                         </Col>
                     )}
                     <Col className="d-flex flex-row-reverse">

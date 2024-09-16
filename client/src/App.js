@@ -10,9 +10,7 @@ function App() {
   useEffect( () => { 
     async function getUserSession() {
       const response = await fetch("http://localhost:8080/user", {
-        method: "GET",
-        headers: {"Content-Type": "application/json"}, 
-        credentials: "include"
+        method: "GET"
       });
       const res = await response.json();
       console.log(""); 
@@ -20,7 +18,6 @@ function App() {
       console.log(res);
       if (res.user) setUser(res.user);
     };
-
     getUserSession(); 
   }, []);
 
