@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors'); 
 const credentials = require('./credentials.js'); 
 const session = require('express-session'); 
+const MySqlStore = require ('express-mysql-session')(session); 
 require('dotenv').config(); 
 const path = require('path'); 
 
@@ -9,15 +10,26 @@ const corsOptions = {
     origin: ['http://localhost:3000'], // TODO: Fix CORS origin
     allowedHeaders: ['Content-Type', 'Authorization'], 
     credentials: true
-}
+};
+
+// const sessionStoreOptions = {
+//     host: process.env.DATABASE_HOST,
+//     port: process.env.DATABASE_PORT,
+//     user: process.env.DATABASE_USER,
+//     password: process.env.DATABASE_PASSWORD,
+//     database: process.env.DATABASE_NAME,
+// };
+// const sessionStore = new MySqlStore({}, cred.con);
+
+const cred = new credentials.Credentials(); 
+const sessionStore = new MySqlStore({}, cred.con);
 
 const sessionOptions = {
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
-}
-
-const cred = new credentials.Credentials(); 
+    saveUninitialized: false,
+    store: sessionStore
+};
 
 const app = express(); 
 app.use(express.static(process.env.FRONTEND_DIR))
@@ -25,6 +37,12 @@ app.use(express.json());
 app.use(cors(corsOptions)); 
 app.use(session(sessionOptions))
 const port = process.env.PORT;
+
+sessionStore.onReady().then(() => {
+    console.log("MySQLStore ready"); 
+}).catch(error => {
+    console.error(error); 
+});
 
 app.all('*', (req, res, next) => {
     console.log(`Incoming ${req.method} request on ${req.url}`);
