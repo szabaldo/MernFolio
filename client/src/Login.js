@@ -5,7 +5,10 @@ import Header from './Header.js';
 import { UserContext } from './App.js';
 
 function Login() {
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState({
+        username: "",
+        password: ""
+    });
     const [formData, setFormData] = useState({
         username: "",
         password: ""
@@ -17,7 +20,7 @@ function Login() {
         const newErrors = validate(formData);
         setErrors(newErrors);
 
-        if (Object.keys(newErrors).length === 0) {
+        if (Object.keys(errors).length === 0) {
             const response = await fetch(process.env.BASE_URL + "/login", {
                 body: JSON.stringify(formData),
                 method: "POST",
@@ -50,29 +53,28 @@ function Login() {
             ...formData,
             [name]: value,
         });
-        if (name == "username") {
-            const {username: _, ...rest} = errors; // Destructuring syntax is weird
-            setErrors(rest);
-        }
-        if (name == "password") {
-            const {password: _, ...rest} = errors; // Destructuring syntax is weird
-            setErrors(rest);
-        }
+        const data = formData; 
+        data[name] = value; 
+        setErrors(validate(data));
     };
 
-    const validate = (data) => {
+    const validate = (data) => { // TODO: Validation should consider ASCII characters, etc. 
         const errors = {}; 
 
         if (!data.username.trim()) {
             errors.username = 'Enter a username';
         } else if (data.username.length > 20) {
             errors.username = 'Username must be between 1 and 20 characters'; 
+        } else {
+            delete errors.username;
         }
 
         if (!data.password) {
             errors.password = 'Enter a password';
         } else if (data.password.length > 20) {
             errors.password = 'Password must be between 1 and 20 characters'; 
+        } else {
+            delete errors.password;
         }
 
         return errors;
