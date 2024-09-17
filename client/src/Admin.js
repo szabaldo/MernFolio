@@ -13,7 +13,6 @@ function Admin() {
 
     return (
         <div>
-            {/* {(!user?.isadmin) && (<Navigate to="/" replace={false} />)} */}
             <Header
                 title="Admin"
                 subtitle={headerOpts.subtitle}

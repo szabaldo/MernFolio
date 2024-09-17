@@ -24,7 +24,7 @@ function Login() {
             password: document.getElementById("formPassword").value,
         };
 
-        const response = await fetch("http://localhost:8080/login", {
+        const response = await fetch(process.env.BASE_URL + "/login", {
             body: JSON.stringify(body), 
             method: "POST",
             headers: {"Content-Type": "application/json"}, 

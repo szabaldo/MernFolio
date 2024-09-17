@@ -24,7 +24,7 @@ function Register() {
         const pm = body.password == body.passwordConfirm;
         setPasswordsMatch(pm); 
         if (pm) {
-            const response = await fetch("http://localhost:8080/register", {
+            const response = await fetch(process.env.BASE_URL + "/register", {
                 body: JSON.stringify(body), 
                 method: "POST",
                 headers: {"Content-Type": "application/json"}
@@ -40,7 +40,7 @@ function Register() {
 
     return (
         <div>
-            {redirect && (<Navigate to="/login" repalce={true} />)}
+            {redirect && (<Navigate to="/login" replace={true} />)}
             <Header 
                 title="Register"
             />

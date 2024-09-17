@@ -198,7 +198,14 @@ app.put('/hide', async (req, res) => {
 });
 
 app.get('/*', (req, res) => {
-    res.status(404).sendFile(path.join(__dirname, process.env.FRONTEND_DIR, "not_found.html")); 
+    res.status(404).sendFile("not_found.html", sendFileOptions, (err) => {
+        if (err) {
+            console.error(err); 
+            next(err); 
+        } else {
+            console.log("Sent not_found.html"); 
+        }
+    }); 
 });
 
 app.listen(port, () => {

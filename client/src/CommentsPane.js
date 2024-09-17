@@ -3,6 +3,7 @@ import Comment from './Comment.js';
 import { UserContext } from './App.js';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 
+
 function CommentsPane({ status, admin = false }) {
     const noCommentsMessage = (
         <div>
@@ -17,7 +18,7 @@ function CommentsPane({ status, admin = false }) {
 
     const approveClick = async (event) => {
         const commentId = event.target.id;
-        const response = await fetch("http://localhost:8080/approve", {
+        const response = await fetch(process.env.BASE_URL + "/approve", {
             body: JSON.stringify({ commentId: commentId }),
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -38,7 +39,7 @@ function CommentsPane({ status, admin = false }) {
 
     const hideClick = async (event) => {
         const commentId = event.target.id;
-        const response = await fetch("http://localhost:8080/hide", {
+        const response = await fetch(process.env.BASE_URL + "/hide", {
             body: JSON.stringify({ commentId: commentId }),
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -59,7 +60,7 @@ function CommentsPane({ status, admin = false }) {
 
     const deleteClick = async (event) => {
         const commentId = event.target.id;
-        const response = await fetch("http://localhost:8080/delete", {
+        const response = await fetch(process.env.BASE_URL + "/delete", {
             body: JSON.stringify({ commentId: commentId }),
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
@@ -79,7 +80,7 @@ function CommentsPane({ status, admin = false }) {
 
     useEffect(() => {
         async function fetchComments() {
-            const response = await fetch("http://localhost:8080/get-comments", {
+            const response = await fetch(process.env.BASE_URL + "/get-comments", {
                 body: JSON.stringify({ status: status }),
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

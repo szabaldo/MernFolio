@@ -9,7 +9,7 @@ function Sambar() {
   const navigate = useNavigate();
 
   const logoutClick = async () => {
-    const response = await fetch("http://localhost:8080/logout", {
+    const response = await fetch(process.env.BASE_URL + "/logout", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
       credentials: "include"

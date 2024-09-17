@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react'; 
-import Sambar from './Sambar';
-import MainPage from './MainPage';
+import Sambar from './Sambar.js';
+import MainPage from './MainPage.js';
 
 const UserContext = createContext(); 
 
@@ -9,7 +9,7 @@ function App() {
 
   useEffect( () => { 
     async function getUserSession() {
-      const response = await fetch("http://localhost:8080/user", {
+      const response = await fetch(process.env.BASE_URL + "/user", {
         method: "GET"
       });
       const res = await response.json();
