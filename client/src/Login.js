@@ -20,7 +20,7 @@ function Login() {
         const newErrors = validate(formData);
         setErrors(newErrors);
 
-        if (Object.keys(errors).length === 0) {
+        if (Object.keys(newErrors).length === 0) {
             const response = await fetch(process.env.BASE_URL + "/login", {
                 body: JSON.stringify(formData),
                 method: "POST",
