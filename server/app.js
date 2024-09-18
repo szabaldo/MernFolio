@@ -7,9 +7,9 @@ require('dotenv').config();
 const path = require('path'); 
 
 const corsOptions = {
-    origin: ['http://localhost:3000'], // TODO: Fix CORS origin
+    origin: ['http://localhost:8080'],
     allowedHeaders: ['Content-Type', 'Authorization'], 
-    credentials: true
+    credentials: true,
 };
 
 const cred = new credentials.Credentials(); 
@@ -157,10 +157,15 @@ app.get('/user', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-    const message = "session destroyed"; 
-    console.log(message); 
-    req.session.destroy();  
-    res.json({message: message});
+    if (req.session) {
+        const message = "session destroyed"; 
+        console.log(message); 
+        req.session.destroy(); 
+        res.set({"Location": "/"});  
+        res.json({message: message});
+    } else {
+        res.json({message: "no session"});
+    }
 });
 
 app.post('/comment', (req, res) => {

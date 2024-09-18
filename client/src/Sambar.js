@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Link, redirect, useNavigate } from 'react-router-dom';
+import { Container, Row, Col } from 'react-bootstrap';
+import { Link, useNavigate } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import { UserContext } from './App.js';
 
@@ -16,7 +16,7 @@ function Sambar() {
     });
     const res = await response.json();
     console.log(res);
-    if (res.username == undefined) {
+    if (res.username == null) {
       setUser(null);
       navigate("/");
     }

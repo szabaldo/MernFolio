@@ -93,7 +93,7 @@ function CommentsPane({ status, admin = false }) {
             setComments(res.comments);
         }
         fetchComments()
-    }, []);
+    }, [user]);
 
     useEffect(() => {
         let c = noCommentsMessage;
