@@ -7,7 +7,7 @@ require('dotenv').config();
 const path = require('path'); 
 
 const corsOptions = {
-    origin: ['http://localhost:8080'],
+    origin: process.env.ORIGIN,
     allowedHeaders: ['Content-Type', 'Authorization'], 
     credentials: true,
 };

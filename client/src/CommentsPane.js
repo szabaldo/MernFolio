@@ -18,7 +18,7 @@ function CommentsPane({ status, admin = false }) {
 
     const approveClick = async (event) => {
         const commentId = event.target.id;
-        const response = await fetch(process.env.BASE_URL + "/approve", {
+        const response = await fetch(process.env.ORIGIN + "/approve", {
             body: JSON.stringify({ commentId: commentId }),
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -39,7 +39,7 @@ function CommentsPane({ status, admin = false }) {
 
     const hideClick = async (event) => {
         const commentId = event.target.id;
-        const response = await fetch(process.env.BASE_URL + "/hide", {
+        const response = await fetch(process.env.ORIGIN + "/hide", {
             body: JSON.stringify({ commentId: commentId }),
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -60,7 +60,7 @@ function CommentsPane({ status, admin = false }) {
 
     const deleteClick = async (event) => {
         const commentId = event.target.id;
-        const response = await fetch(process.env.BASE_URL + "/delete", {
+        const response = await fetch(process.env.ORIGIN + "/delete", {
             body: JSON.stringify({ commentId: commentId }),
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
@@ -80,7 +80,7 @@ function CommentsPane({ status, admin = false }) {
 
     useEffect(() => {
         async function fetchComments() {
-            const response = await fetch(process.env.BASE_URL + "/get-comments", {
+            const response = await fetch(process.env.ORIGIN + "/get-comments", {
                 body: JSON.stringify({ status: status }),
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

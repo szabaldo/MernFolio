@@ -21,7 +21,7 @@ function Login() {
         setErrors(newErrors);
 
         if (Object.keys(newErrors).length === 0) {
-            const response = await fetch(process.env.BASE_URL + "/login", {
+            const response = await fetch(process.env.ORIGIN + "/login", {
                 body: JSON.stringify(formData),
                 method: "POST",
                 headers: { "Content-Type": "application/json" },

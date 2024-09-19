@@ -81,7 +81,7 @@ function Register() {
         setErrors(newErrors);
 
         if (Object.keys(errors).length === 0) {
-                const response = await fetch(process.env.BASE_URL + "/register", {
+                const response = await fetch(process.env.ORIGIN + "/register", {
                     body: JSON.stringify(formData),
                     method: "POST",
                     headers: { "Content-Type": "application/json" }

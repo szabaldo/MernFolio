@@ -12,7 +12,7 @@ function Home() {
     const headerOpts = user ? { subtitle: "", linkText: "", linkTo: "" } : { subtitle: "You are not logged in.", linkText: "Log in", linkTo: "/login" }
 
     const submitComment = async () => {
-        const response = await fetch(process.env.BASE_URL + "/comment", {
+        const response = await fetch(process.env.ORIGIN + "/comment", {
             body: JSON.stringify({ comment: document.getElementById("commentField").value }),
             method: "POST",
             headers: { "Content-Type": "application/json" },

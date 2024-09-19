@@ -9,7 +9,7 @@ function App() {
 
   useEffect( () => { 
     async function getUserSession() {
-      const response = await fetch(process.env.BASE_URL + "/user", {
+      const response = await fetch(process.env.ORIGIN + "/user", {
         method: "GET"
       });
       const res = await response.json();
