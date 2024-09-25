@@ -23,7 +23,7 @@ const sessionOptions = {
 };
 
 const app = express(); 
-app.use(express.static(path.join(__dirname, process.env.FRONTEND_DIR)));
+app.use(express.static(process.env.FRONTEND_DIR));
 app.use(express.json()); 
 app.use(cors(corsOptions)); 
 app.use(session(sessionOptions))
