@@ -4,24 +4,24 @@ services:
     ports: 
       - "80:8080"
     networks: 
-      - mn
+      - mf-network
     depends_on: 
-      mysql:
+      mysqldb:
         condition: service_healthy
         restart: true
 
-  mysql: 
+  mysqldb: 
     image: mysql
     networks: 
-      - mn 
+      - mf-network
     environment: 
       MYSQL_ROOT_PASSWORD: root
     healthcheck:
-      test: ["CMD", "mysqladmin", "-uroot", "-proot", "ping", "localhost"]
+      test: ["CMD", "mysqladmin", "-uroot", "-proot", "ping", "-hlocalhost"]
       interval: 5s
-      retries: 5
+      retries: 10
       timeout: 5s
 
 networks: 
-  mn: 
+  mf-network: 
     external: true 
