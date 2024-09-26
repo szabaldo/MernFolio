@@ -2,8 +2,7 @@ const dotEnv = require('dotenv-webpack');
 module.exports = {
   entry: './src/index.js',
   output: {
-    // path: __dirname + '/build',
-    path: __dirname + process.env.BUILD_DIR,
+    path: __dirname + '/build',
     publicPath: '/',
     filename: 'bundle.js'
   },

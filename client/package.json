@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack serve --config ./webpack.config.js --mode development",
     "build": "webpack --config webpack.config.js --mode development",
-    "build-prod": "webpack --config webpack.config.js --mode production; rm -f ../server/build/bundle.js; cp -f ./build/* ../server/build",
+    "build-prod": "webpack --config webpack.config.js --mode production ; cp -f ./build/* ../server/build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
