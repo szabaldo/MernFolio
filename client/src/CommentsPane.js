@@ -2,19 +2,23 @@ import React, { useEffect, useState, useContext } from 'react';
 import Comment from './Comment.js';
 import { UserContext } from './App.js';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { useOutletContext } from 'react-router-dom'; 
 
 
 function CommentsPane({ status, admin = false }) {
+    const isIntro = useOutletContext(); 
+    console.log(isIntro.current); 
     const noCommentsMessage = (
         <div>
             <h1 className="xl-text d-flex justify-content-center">Comments</h1>
-            <h3 className="large-text d-flex justify-content-center">There are no comments right now.</h3>
+            <h3 className="large-text d-flex justify-content-center">There are no comments right now</h3>
         </div>
     );
 
     const [commentsElements, setCommentsElements] = useState(noCommentsMessage);
     const [comments, setComments] = useState([]);
     const { user, setUser } = useContext(UserContext);
+    
 
     const approveClick = async (event) => {
         const commentId = event.target.id;
@@ -128,7 +132,8 @@ function CommentsPane({ status, admin = false }) {
     }, [comments])
 
     return (
-        <div>
+        <div className={isIntro.current ? "rise-fade-dvs" : ""} >
+
             <Container className="border border-secondary rounded" id="pane" >
                 {commentsElements}
             </Container>

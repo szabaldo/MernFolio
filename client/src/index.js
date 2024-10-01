@@ -8,6 +8,7 @@ import Register from './Register';
 import Admin from './Admin';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/Customs.css';
+import './styles/Animations.css';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

@@ -30,36 +30,21 @@ function Sambar() {
   }
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
+    <Navbar expand="lg" className="bg-secondary slide-right">
+      <Container className="fade-in-dm">
         <Row className="w-100">
-          <Col>
-            <Container>
-              <Row>
-                <Col>
-                  <Link to="/" className="navbar-brand large-text">Sam Zabaldo</Link>
-                </Col>
-                <Col>
-                  {adminLink}
-                </Col>
-              </Row>
-            </Container>
+          <Col className="d-flex">
+            <Link to="/" className="navbar-brand large-text">Sam Zabaldo</Link>
+            {adminLink}
           </Col>
           <Col className={"d-flex flex-row-reverse"}>
-            <Container>
-              <Row className="h-100">
-                <Col>
-                  {user && <h5 className="d-flex align-items-center nav-link flex-row-reverse large-text">{user.fname}</h5>}
-                </Col>
-                <Col className="d-flex align-items-center">
-                  {user ? (
-                    <Link className="d-flex align-items-center nav-link medium-text" onClick={logoutClick}>Log out</Link> 
-                  ) : (
-                    <Link className="d-flex align-items-center nav-link medium-text" to="/login"          >Log in </Link>
-                  )} 
-                </Col>
-              </Row>
-            </Container>
+            {user ? (
+              <Link className="d-flex align-items-center nav-link medium-text mx-3" onClick={logoutClick}>Log out</Link>
+            ) : (
+              <Link className="d-flex align-items-center nav-link medium-text mx-3" to="/login"          >Log in </Link>
+            )}
+
+            {user && <h5 className="d-flex align-items-center nav-link flex-row-reverse large-text h-100">{user.fname}</h5>}
           </Col>
         </Row>
       </Container>

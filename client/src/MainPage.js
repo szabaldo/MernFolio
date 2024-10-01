@@ -1,12 +1,19 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom'; 
-import { Container, Row, Col } from 'react-bootstrap';
-import Home from './Home.js';
+import React, { useState, useEffect, useRef } from 'react';
+import { Outlet, useLocation } from 'react-router-dom'; 
 
 function MainPage() {
+    const location = useLocation();
+    const isIntro = useRef(true); 
+    
+    useEffect( () => {
+        setTimeout(() => {
+            isIntro.current = false; 
+        }, 1000);
+    });
+
     return (
         <div>
-            <Outlet />
+            <Outlet context={isIntro} />
         </div>
     );
 }

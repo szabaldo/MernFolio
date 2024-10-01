@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useOutletContext } from 'react-router-dom';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import CommentsPane from './CommentsPane.js';
 import Header from './Header.js';
@@ -8,8 +8,9 @@ import { UserContext } from './App.js';
 
 function Home() {
     const { user, setUser } = useContext(UserContext);
+    const isIntro = useOutletContext(); 
 
-    const headerOpts = user ? { subtitle: "", linkText: "", linkTo: "" } : { subtitle: "You are not logged in.", linkText: "Log in", linkTo: "/login" }
+    const headerOpts = user ? { subtitle: "", linkText: "", linkTo: "" } : { subtitle: "You are not logged in", linkText: "Log in", linkTo: "/login" }
 
     const submitComment = async () => {
         const response = await fetch(process.env.ORIGIN + "/comment", {
@@ -24,7 +25,7 @@ function Home() {
     }
 
     const commentBox = (
-        <div>
+        <div className={`${isIntro.current ? "rise-fade-dvs" : ""}`}>
             <Container>
                 <Form>
                     <Row>
@@ -53,6 +54,7 @@ function Home() {
                 linkText={headerOpts.linkText}
                 linkTo={headerOpts.linkTo}
             />
+            <img src="portrait.jpg" className={`d-flex align-items-center m-auto portrait ${isIntro.current ? "rise-fade-ds" : ""}`} />
             {user && commentBox}
             <Container>
                 <Row className="py-5">
