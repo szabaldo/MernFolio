@@ -1,115 +1,4 @@
 /* :root {
-    --intro-dur: 0.75s;
-    --intro-rise-dur-mult: 1.5;
-    --intro-slide-dur-mult: 1;
-
-    --short-dur: 0.25s; 
-}
-
-.intro-rise,
-.intro-rise-mult,
-.intro-slide-left,
-.intro-fade-in,
-.hide {
-    position: relative;
-    animation-duration: var(--intro-dur);
-}
-
-.intro-rise,
-.intro-rise-mult {
-    animation-name: intro-rise;
-    animation-timing-function: ease; 
-    animation-duration: calc(var(--intro-dur) * var(--intro-rise-dur-mult));
-}
-
-.intro-rise-mult {
-    animation-duration: calc(var(--intro-dur) * var(--intro-rise-dur-mult));
-}
-
-@keyframes intro-rise {
-    0% {
-        top: 100vh;
-        opacity: 0;
-    }
-
-    50% {
-        opacity: 0; 
-    }
-
-    100% {
-        top: 0;
-        opacity: 1;
-    }
-}
-
-.intro-slide-left {
-    animation-name: intro-slide-left;
-    animation-duration: calc(var(--intro-dur) * var(--intro-slide-dur-mult));
-    animation-timing-function: cubic-bezier(0, 0, 0.8, 1);
-}
-
-@keyframes intro-slide-left {
-    from {
-        left: -100vh;
-    }
-
-    to {
-        left: 0;
-    }
-}
-
-.intro-fade-in {
-    animation-name: intro-fade-in;
-    animation-delay: var(--intro-dur);
-    animation-fill-mode: backwards;
-    animation-timing-function: ease-out; 
-}
-
-@keyframes intro-fade-in {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
-}
-
-.hide {
-    animation-name: hide;
-    animation-duration: var(--intro-dur);
-    animation-fill-mode: forwards;
-}
-
-@keyframes hide {
-    from {
-        opacity: 1;
-        visibility: visible;
-    }
-
-    to {
-        opacity: 0;
-        visibility: hidden;
-    }
-}
-
-.short-rise {
-    animation-name: intro-rise;
-    animation-duration: var(--short-dur); 
-
-}
-
-@keyframes short-rise {
-    from {
-
-    }
-
-    to {
-
-    }
-} */
-
-:root {
     --very-fast: 0.25s; 
     --fast: 0.75s; 
     --medium: 1s; 
@@ -143,10 +32,27 @@
     to { left: 0vh }
 }
 
-.rise-fade {
+.rise-fade,
+.rise-fade-fixed {
     opacity: 0;
-    position: relative; 
     animation: short-rise var(--medium), fade-in var(--slow);
+    animation-fill-mode: forwards;
+}
+
+.rise-fade {
+    position: relative !important;
+    opacity: 0; 
+}
+
+.rise-fade-fixed {
+    position: fixed !important; 
+    top: 50Vh;
+}
+
+.rise-fade-out {
+    position: relative !important; 
+    top: 50vh;
+    animation: rise var(--slow) ease 0s 1 reverse, fade-in var(--slow) ease 0s 1 reverse;
     animation-fill-mode: forwards;
 }
 
@@ -169,6 +75,97 @@
     position: relative; 
     animation: short-rise var(--medium) var(--delay-very-slow), fade-in var(--slow) var(--delay-very-slow);
     animation-fill-mode: forwards;
+}
+
+.slide-right {
+    position: relative; 
+    animation: slide-right var(--medium);
+}
+
+.fade-in-dm {
+    animation: fade-in var(--fast) var(--medium); 
+    animation-fill-mode: both;
+}
+ */
+
+
+ :root {
+    --very-fast: 0.25s; 
+    --fast: 0.75s; 
+    --medium: 1s; 
+    --slow: 1.25s; 
+    --very-slow: 1.75s;
+
+    --delay-very-fast: 0.1s; 
+    --delay-fast: 0.2s; 
+    --delay-medium: 0.3s; 
+    --delay-slow: 0.4s; 
+    --delay-very-slow: 0.5s;
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes rise {
+    from { top: 100vh } 
+    to { top: 0 }
+}
+
+@keyframes short-rise {
+    from { top: 15vh } 
+    to { top: 0 }
+}
+
+@keyframes rise-middle {
+    from {top: 100vh }
+    to {top: 40vh }
+}
+
+@keyframes rise-middle-top {
+    from {top: 40vh }
+    to {top: -40vh }
+}
+
+@keyframes slide-right {
+    from { left: -100vw }
+    to { left: 0vw }
+}
+
+.rise-fade, 
+.rise-fade-dvf, 
+.rise-fade-ds, 
+.rise-fade-dvs,
+.rise-fade-middle, 
+.rise-fade-middle-out {
+    opacity: 0;
+    position: relative; 
+    animation-fill-mode: forwards !important; 
+}
+
+.rise-fade {
+    animation: short-rise var(--medium), fade-in var(--slow);
+}
+
+.rise-fade-dvf {
+    animation: short-rise var(--medium) var(--delay-very-fast), fade-in var(--slow) var(--delay-very-fast);
+}
+
+.rise-fade-ds {
+    animation: short-rise var(--medium) var(--delay-slow), fade-in var(--slow) var(--delay-slow);
+}
+
+.rise-fade-dvs {
+    animation: short-rise var(--medium) var(--delay-very-slow), fade-in var(--slow) var(--delay-very-slow);
+}
+
+.rise-fade-middle {
+    animation: rise-middle var(--medium), fade-in var(--medium);
+}
+
+.rise-fade-middle-out {
+    animation: rise-middle-top var(--slow) ease-in 0s 1, fade-in var(--medium) ease 0s 1 reverse;
 }
 
 .slide-right {

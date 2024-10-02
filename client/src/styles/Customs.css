@@ -80,3 +80,11 @@
     max-width: 256px;
     border-radius: 50%; 
 }
+
+.r-0 {
+    right: 0; 
+}
+
+.l-0 {
+    left: 0; 
+}
