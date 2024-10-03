@@ -106,6 +106,17 @@ app.get('/admin', (req, res, next) => {
     }
 });
 
+app.get('/portrait.jpg', (req, res, next) => {
+    res.sendFile("portrait.jpg", sendFileOptions, (err) => {
+        if (err) {
+            console.error(err); 
+            next(err); 
+        } else {
+            console.log("Sent portrait.jpg");
+        }
+    }); 
+});
+
 app.post('/register', async (req, res) => { 
     if (!(await cred.doesUserExist(req.body.username))) {
         console.log(`User ${req.body.username} doesn't exist; registering.`);
