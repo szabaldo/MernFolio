@@ -1,6 +1,7 @@
 :root {
     --min-width: 320px;
     --inner-width: 512px;
+    --dialog-width: 200px; 
     --max-width: 1024px;
     --small-text: 12px;
     --medium-text: 16px;
@@ -30,8 +31,20 @@
     max-width: var(--inner-width);
 }
 
+.dialog-width {
+    width: var(--dialog-width); 
+}
+
 .max-width {
     max-width: var(--max-width);
+}
+
+.w-100vw {
+    width: 100vw; 
+}
+
+.h-100vh {
+    height: 100vh; 
 }
 
 .small-text {
@@ -81,10 +94,38 @@
     border-radius: 50%; 
 }
 
+.h-0 {
+    height: 0 !important;
+}
+
+.w-0 {
+    width: 0 !important;
+}
+
 .r-0 {
     right: 0; 
 }
 
 .l-0 {
     left: 0; 
+}
+
+.t-0 {
+    top: 0; 
+}
+
+.t-50 {
+    top: 50%; 
+}
+
+.b-0 {
+    bottom: 0; 
+}
+
+.invert-color {
+    filter: invert(1); 
+}
+
+.cursor-pointer {
+    cursor: pointer; 
 }

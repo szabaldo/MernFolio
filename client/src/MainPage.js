@@ -12,7 +12,7 @@ function MainPage() {
     });
 
     return (
-        <div>
+        <div id="mainPage">
             <Outlet context={isIntro} />
         </div>
     );

@@ -33,8 +33,13 @@
 }
 
 @keyframes rise-middle {
-    from {top: 100vh }
+    from {top: 55vh }
     to {top: 40vh }
+}
+
+@keyframes fall-middle {
+    from {top: -15vh }
+    to {top: 10vh }
 }
 
 @keyframes rise-middle-top {
@@ -42,9 +47,19 @@
     to {top: -40vh }
 }
 
+@keyframes fall-middle-top {
+    from {top: 10vh }
+    to {top: 100vh }
+}
+
 @keyframes slide-right {
     from { left: -100vw }
     to { left: 0vw }
+}
+
+@keyframes blur {
+    from { filter: blur(0px) }
+    to { filter: blur(20px) }
 }
 
 .rise-fade, 
@@ -52,14 +67,16 @@
 .rise-fade-ds, 
 .rise-fade-dvs,
 .rise-fade-middle, 
-.rise-fade-middle-out {
+.rise-fade-middle-out,
+.fall-fade-middle, 
+.fall-fade-middle-out {
     opacity: 0;
     position: relative; 
     animation-fill-mode: forwards !important; 
 }
 
 .rise-fade {
-    animation: short-rise var(--medium), fade-in var(--slow);
+    animation: short-rise var(--fast), fade-in var(--slow);
 }
 
 .rise-fade-dvf {
@@ -75,11 +92,19 @@
 }
 
 .rise-fade-middle {
-    animation: rise-middle var(--medium), fade-in var(--medium);
+    animation: rise-middle var(--fast), fade-in var(--medium);
 }
 
 .rise-fade-middle-out {
     animation: rise-middle-top var(--slow) ease-in 0s 1, fade-in var(--medium) ease 0s 1 reverse;
+}
+
+.fall-fade-middle {
+    animation: fall-middle var(--very-fast), fade-in var(--fast);
+}
+
+.fall-fade-middle-out {
+    animation: fall-middle-top var(--very-fast) ease-in 0s 1, fade-in var(--very-fast) ease 0s 1 reverse;
 }
 
 .fade-in-50 {
@@ -100,4 +125,14 @@
 .fade-in-dm {
     animation: fade-in var(--fast) var(--medium); 
     animation-fill-mode: both;
+}
+
+.blur-anim {
+    animation: blur var(--very-fast);
+    animation-fill-mode: forwards;
+}
+
+.unblur-anim {
+    animation: blur var(--slow) ease 0s 1 reverse;
+    animation-fill-mode: forwards;
 }

@@ -7,7 +7,6 @@ import { useOutletContext } from 'react-router-dom';
 
 function CommentsPane({ status, admin = false }) {
     const isIntro = useOutletContext(); 
-    console.log(isIntro.current); 
     const noCommentsMessage = (
         <div>
             <h1 className="xl-text d-flex justify-content-center">Comments</h1>
@@ -125,7 +124,7 @@ function CommentsPane({ status, admin = false }) {
                             </Container>
                         </Col>)}
                     </Row>
-                )
+                );
             });
         }
         setCommentsElements(c);

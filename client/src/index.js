@@ -6,6 +6,7 @@ import Home from './Home';
 import Login from './Login'; 
 import Register from './Register';
 import Admin from './Admin';
+import Account from './Account';
 import 'bootstrap/dist/css/bootstrap.css';
 import './styles/Customs.css';
 import './styles/Animations.css';
@@ -21,6 +22,7 @@ root.render(
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="admin" element={<Admin />} />
+                    <Route path="account/:userId" element={<Account />} />
                 </Route>
             </Routes>
         {/* </React.StrictMode> */}
