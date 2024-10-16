@@ -2,66 +2,92 @@ import React, { useContext, useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import { ModalContext } from './App.js';
 
+function Modal({
+    children,
+    onClose = (() => { }),
+    animStart = [{ keyframes: null, duration: 1000 }],
+    animEnd = [{ keyframes: null, duration: 1000 }],
+    style = {},
+    positionStyle = {},
+    disableScroll = false
+}) {
+    const backgroundOpacity = 0.5;
+    const blurAmount = 20;
+    const modalList = useContext(ModalContext);
+    modalList.current.push(modalList.current.length + 1);
+    style.zIndex = modalList.current.length + 1;
 
-function Modal({ inner, width, left="", right="", top="", animStart, animEnd}) {
-    const { modalList , setModalList } = useContext(ModalContext); 
+    useEffect(() => {
+        if (disableScroll) document.body.style.overflow = "hidden";
 
-    const modalBodyClasses = `${width} ${animStart}`
+        if (modalList.current.length >= modalList.last?.length) {
+            let modalBackgrounds = document.getElementsByName("modalBackground");
+            let modalBackground = modalBackgrounds[modalBackgrounds.length - 1];
+            let sambar = document.getElementById("sambar"); 
+            let mainPage = document.getElementById("mainPage");
+            let modalBoxes = document.getElementsByName("modalBox");
+            let modalBox = modalBoxes[modalBoxes.length - 1];
+            modalBoxes = Array.from(modalBoxes).slice(0, modalBoxes.length - 1); 
 
-    useEffect( () => {
-        const sambar = document.getElementById("sambar");
-        const mainPage = document.getElementById("mainPage");
-        if (modalList.length > 0) {
-            if (!mainPage.classList.contains("blur-anim")) {
-                mainPage.classList.remove("unblur-anim");
-                sambar.classList.remove("unblur-anim"); 
-                mainPage.offsetHeight;
-                sambar.offsetHeight;
-                mainPage.classList.add("blur-anim"); 
-                sambar.classList.add("blur-anim");
+            const blurDuration = 1000;
+            sambar.animate({ filter: [`blur(${blurAmount * modalList.current.length}px)`] }, { duration: blurDuration, fill: "forwards" });
+            mainPage.style.zIndex = "-1";
+            mainPage.animate({ filter: [`blur(${blurAmount * modalList.current.length}px)`] }, { duration: blurDuration, fill: "forwards" });
+            for (const modalBox of modalBoxes) modalBox.animate({ filter: [`blur(${blurAmount * (modalList.current.length - 2)}px)`] }, { duration: blurDuration, fill: "forwards" });
+
+            const backgroundFadeDuration = 1000;
+            modalBackground.animate({ opacity: [0, backgroundOpacity] }, { duration: backgroundFadeDuration, fill: "forwards" });
+
+            for (const anim of animStart) {
+                modalBox.animate(anim.keyframes, anim.duration);
             }
         }
-    }, [modalList]);
+    });
 
-    const close = () => {
-        const bg = document.getElementById("modalBackground");
-        const box = document.getElementById("modalBox"); 
-        const sambar = document.getElementById("sambar");
-        const mainPage = document.getElementById("mainPage");
+    const close = (closeCallback) => {
+        if (disableScroll) document.body.style.overflow = "auto";
 
-        box.classList.remove(animStart);
-        box.offsetHeight;
-        box.classList.add(animEnd);
+        let modalBackgrounds = document.getElementsByName("modalBackground");
+        let modalBackground = modalBackgrounds[modalBackgrounds.length - 1];
+        let sambar = document.getElementById("sambar"); 
+        let mainPage = document.getElementById("mainPage");
+        let modalBoxes = document.getElementsByName("modalBox");
+        let modalBox = modalBoxes[modalBoxes.length - 1];
+        modalBoxes = Array.from(modalBoxes).slice(0, modalBoxes.length - 1);
 
-        bg.classList.remove("fade-in-50");
-        bg.offsetHeight;
-        bg.classList.add("fade-out-50");
+        const blurDuration = 250;
+        sambar.animate({ filter: [`blur(${blurAmount * (modalList.current.length - 1)}px)`] }, { duration: blurDuration, fill: "forwards" });
+        mainPage.animate({ filter: [`blur(${blurAmount * (modalList.current.length - 1)}px)`] }, { duration: blurDuration, fill: "forwards" });
+        for (const modalBox of modalBoxes) modalBox.animate({ filter: [`blur(${blurAmount * (modalList.current.length - 3)}px)`] }, { duration: blurDuration, fill: "forwards" });
 
-        mainPage.classList.remove("blur-anim");
-        mainPage.offsetHeight;
-        mainPage.classList.add("unblur-anim"); 
-    
-        sambar.classList.remove("blur-anim");
-        sambar.offsetHeight;
-        sambar.classList.add("unblur-anim");
+        const backgroundFadeDuration = 250;
+        modalBackground.animate({ opacity: [0] }, { duration: backgroundFadeDuration, fill: "forwards" });
+        
+        for (const anim of animEnd) {
+            modalBox.animate(anim.keyframes, anim.duration);
+        }
 
-        setTimeout( () => {
-            setModalList(modalList.filter( (modal) => {console.log(modal); true }))
-        }, 1000)
+        const longestAnimationDuration = Math.max(backgroundFadeDuration, ...animEnd.map((anim) => anim.duration.duration ? anim.duration.duration : anim.duration));
+
+        setTimeout(() => {
+            modalList.last = modalList.current;
+            modalList.current = []; 
+            closeCallback();
+        }, longestAnimationDuration);
     }
 
     return (
-        <div>
-            <div className="fade-in-50 position-fixed bg-black t-0 l-0 h-100vh w-100vw overflow-hidden" id="modalBackground" />
-            <Container className={`position-fixed p-3 rounded border shadow bg-white ${modalBodyClasses}`} style={{left: left, right: right, top: top}} id="modalBox">
+        <Container className="position-fixed d-flex" style={positionStyle}>
+            <div className="position-fixed bg-black t-0 l-0 h-100vh w-100vw overflow-hidden" style={{ zIndex: modalList.current.length + 1, opacity: 0.5 }} id="modalBackground" name="modalBackground" />
+            <Container className="position-absolute p-3 rounded border shadow bg-white" style={style} id="modalBox" name="modalBox">
                 <Row>
-                    <img src="x.png" className="cursor-pointer" style={{ width: "50px" }} onClick={close}></img>
+                    <img src="x.png" className="cursor-pointer" style={{ width: "50px" }} onClick={() => close(onClose)}></img>
                 </Row>
                 <Row>
-                    {inner}
+                    {children}
                 </Row>
             </Container>
-        </div>
+        </Container>
     );
 }
 

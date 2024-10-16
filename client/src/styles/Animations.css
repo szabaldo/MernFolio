@@ -1,4 +1,4 @@
- :root {
+ /* :root {
     --very-fast: 0.25s; 
     --fast: 0.75s; 
     --medium: 1s; 
@@ -135,4 +135,49 @@
 .unblur-anim {
     animation: blur var(--slow) ease 0s 1 reverse;
     animation-fill-mode: forwards;
+} */
+
+:root {
+    --very-fast: 0.25s; 
+    --fast: 0.75s; 
+    --medium: 1s; 
+    --slow: 1.25s; 
+    --very-slow: 1.75s;
+
+    --delay-very-fast: 0.1s; 
+    --delay-fast: 0.2s; 
+    --delay-medium: 0.3s; 
+    --delay-slow: 0.4s; 
+    --delay-very-slow: 0.5s;
+}
+
+@keyframes fade-in {
+    from { opacity: 0 }
+    to { opacity: 1 }
+}
+
+@keyframes fade-in-50 {
+    from { opacity: 0 }
+    to { opacity: 0.5 }
+}
+
+@keyframes rise-50px {
+    from { top: 50px }
+    to { top: 0px }
+}
+
+.fade-in-50 {
+    animation: fade-in-50 var(--medium);
+}
+
+.fade-out-50 {
+    animation: fade-in-50 var(--medium) ease 0s 1 reverse;
+}
+
+.rise-fade {
+    animation: rise-50px var(--medium), fade-in var(--medium);
+}
+
+.sink-fade-out {
+    animation: rise-50px var(--medium) ease 0s 1 reverse, fade-in var(--medium) ease 0s 1 reverse; 
 }

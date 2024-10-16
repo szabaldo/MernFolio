@@ -2,33 +2,14 @@ import React, { createContext, useState, useEffect, useRef } from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import Sambar from './Sambar.js';
 import MainPage from './MainPage.js';
-import Modal from './Modal.js';
 
 const UserContext = createContext();
-const ModalContext = createContext({ modalList: [], setModalList: () => { } });
+const ModalContext = createContext();
 
 function App() {
   const [user, setUser] = useState(null);
-  const [modalList, setModalList] = useState([]);
-  const [modalElements, setModalElements] = useState([]);
-
-  useEffect(() => {
-    const len = modalList.length;  
-    const m = modalList.map((modal) => {
-      return (
-          <Modal 
-            key={len} 
-            inner={modal.inner} 
-            width={modal.width}
-            left={modal.left}
-            right={modal.right}
-            animStart={modal.animStart}
-            animEnd={modal.animEnd}
-          />
-      );  
-    });
-    setModalElements(m);
-  }, [modalList])
+  const modalList = useRef([]); 
+  modalList.last = []; 
 
   useEffect(() => {
     async function getUserSession() {
@@ -45,11 +26,10 @@ function App() {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, setUser }} className="min-width">
-      <ModalContext.Provider value={{ modalList, setModalList }} >
-        <Sambar />
-        <MainPage />
-        {modalElements}
+    <UserContext.Provider value={{ user, setUser }}>
+      <ModalContext.Provider value={modalList} >
+        <Sambar id="sambar"/>
+        <MainPage id="mainPage"/>
       </ModalContext.Provider>
     </UserContext.Provider>
   );

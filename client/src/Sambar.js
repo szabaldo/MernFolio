@@ -1,12 +1,15 @@
-import React, { useContext } from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import React, { useContext, useState } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import { UserContext, ModalContext } from './App.js';
+import Modal from './Modal.js';
 
-function Sambar() {
+function Sambar({ id }) {
   const { user, setUser } = useContext(UserContext);
-  const { modalList, setModalList } = useContext(ModalContext);
+  const modalList = useContext(ModalContext);
+  const [accountModal, setAccountModal] = useState(false);
+  const [deleteAccountModal, setDeleteAccountModal] = useState(false);
   const navigate = useNavigate();
 
   const logoutClick = async () => {
@@ -30,33 +33,105 @@ function Sambar() {
     adminLink = null;
   }
 
-  const accountClick = () => {
-    const content = (
+  const accountModalElement = (
+    <Modal
+      onClose={() => { setAccountModal(false); }}
+      animStart={ 
+        [
+          {
+            keyframes: { 
+              opacity: [0, 1]
+            }, 
+            duration: 250
+          }, 
+          { 
+            keyframes: { 
+              transform: ["translateY(-25px)", "translate(0px)"] 
+            }, 
+            duration: 250
+          }
+        ] 
+      }
+      animEnd={ 
+        [
+          {
+            keyframes: { 
+              opacity: [0]
+            }, 
+            duration: { duration: 125, fill: "forwards"}
+          }, 
+          { 
+            keyframes: { 
+              transform: ["translateY(0px)", "translateY(-25px)"] 
+            }, 
+            duration: { duration: 250, fill: "forwards"}
+          }
+        ] 
+      }
+      style={{
+        marginTop: document.getElementById("sambar")?.getBoundingClientRect().height / 2,
+        width: "512px"
+      }}
+      positionStyle={{
+        flexDirection: "row-reverse"
+      }}
+      disableScroll={true}
+    >
       <Container>
         <Row>
-          <h1>Account</h1>
+          <h1 className="xl-text d-flex justify-content-center">Account</h1>
         </Row>
         <Row>
-          <h3>Delete Account</h3>
+          <Button className="w-fit-content m-auto" onClick={() => { setDeleteAccountModal(true); }} variant="danger">Delete Account</Button>
         </Row>
       </Container>
-    );
+    </Modal>
+  );
 
-    console.log(`${document.getElementById("sambar").getBoundingClientRect().height}px !important`)
-    const params = {
-      inner: content,
-      width: "dialog-width", 
-      left: document.getElementById("accountArrow").getBoundingClientRect().x,  
-      top: `62px !important`,
-      animStart: "fall-fade-middle", 
-      animEnd: "fall-fade-middle-out"
-    }
-
-    setModalList(modalList.concat(params));
-  }
+  const deleteAccountModalElement = (
+    <Modal
+      onClose={() => { setDeleteAccountModal(false); }}
+      animStart={ 
+        [
+          {
+            keyframes: { 
+              opacity: [0, 1]
+            }, 
+            duration: 250
+          }, 
+          { 
+            keyframes: { 
+              transform: ["translateY(25px)", "translate(0px)"] 
+            }, 
+            duration: 250
+          }
+        ] 
+      }
+      animEnd={ 
+        [
+          {
+            keyframes: { 
+              opacity: [0]
+            }, 
+            duration: { duration: 500, fill: "forwards"}
+          }, 
+          { 
+            keyframes: { 
+              transform: ["translateY(0px)", "translateY(-100px)"] 
+            }, 
+            duration: { duration: 500, fill: "forwards"}
+          }
+        ] 
+      }
+      style={{ left: "0px", right: "0px", top: "200px", width: "800px" }}
+    >
+      <h1>hi</h1>
+    </Modal>
+  );
 
   return (
-    <Navbar expand="lg" className="bg-secondary slide-right" id="sambar">
+    <>
+    <Navbar expand="lg" className="bg-secondary slide-right" id={id}>
       <Container className="fade-in-dm">
         <Row className="w-100">
           <Col className="d-flex">
@@ -71,18 +146,24 @@ function Sambar() {
             )}
             {user && (
               <div>
-                <u className="cursor-pointer" onClick={accountClick}>
+                <u className="cursor-pointer" onClick={() => { setAccountModal(!accountModal); }}>
                   <h5 className="d-flex align-items-center justify-content-center nav-link large-text m-0 position-relative h-0 t-50">
                     {user.fname}
                   </h5>
-                  <img src="down_arrow.svg" className="d-flex l-0 r-0 mx-auto invert-color position-relative" style={{ width: "30px", top: "65%" }} id="accountArrow"/>
+                  <img src="down_arrow.svg" className="d-flex l-0 r-0 mx-auto invert-color position-relative" style={{ width: "30px", top: "65%" }} id="accountArrow" />
                 </u>
               </div>
             )}
           </Col>
         </Row>
+        {/* {accountModal && accountModalElement}
+        {deleteAccountModal && deleteAccountModalElement} */}
       </Container>
+      
     </Navbar>
+    {accountModal && accountModalElement}
+    {deleteAccountModal && deleteAccountModalElement}
+    </>
   );
 }
 

@@ -3,11 +3,10 @@ import { Outlet, useOutletContext } from 'react-router-dom';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import CommentsPane from './CommentsPane.js';
 import Header from './Header.js';
-import { UserContext, ModalContext } from './App.js';
+import { UserContext } from './App.js';
 
 function Home() {
     const { user, setUser } = useContext(UserContext);
-    const { modalList, setModalList } = useContext(ModalContext);
     const isIntro = useOutletContext();
     const [comment, setComment] = useState("");
     const [commentSubmitted, setCommentSubmitted] = useState(false);
@@ -23,25 +22,25 @@ function Home() {
         });
         const res = await response.json();
         console.log(res);
-        const content = (
-            <Container>
-                <Row className="py-1">
-                    <h2 className="large-text d-flex justify-content-center">Thanks!</h2>
-                    <br />
-                    <p className="medium-text d-flex justify-content-center">Your comment is under review and will appear on the website once approved.</p>
-                </Row>
-            </Container>
-        );
+        // const content = (
+        //     <Container>
+        //         <Row className="py-1">
+        //             <h2 className="large-text d-flex justify-content-center">Thanks!</h2>
+        //             <br />
+        //             <p className="medium-text d-flex justify-content-center">Your comment is under review and will appear on the website once approved.</p>
+        //         </Row>
+        //     </Container>
+        // );
 
-        const params = {
-            inner: content,
-            width: "inner-width",
-            left: "0",
-            right: "0",
-            animStart: "rise-fade-middle", 
-            animEnd: "rise-fade-middle-out"
-        }
-        setModalList(modalList.concat(params));
+        // const params = {
+        //     inner: content,
+        //     width: "inner-width",
+        //     left: "0",
+        //     right: "0",
+        //     animStart: "rise-fade-middle", 
+        //     animEnd: "rise-fade-middle-out"
+        // }
+        // setModalList(modalList.concat(params));
         document.getElementById("commentField").value = "";
         setComment("");
         setCommentSubmitted(true);
