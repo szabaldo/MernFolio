@@ -9,7 +9,7 @@ const ModalContext = createContext();
 function App() {
   const [user, setUser] = useState(null);
   const modalList = useRef([]); 
-  modalList.last = []; 
+  modalList.lastLength = 0; 
 
   useEffect(() => {
     async function getUserSession() {

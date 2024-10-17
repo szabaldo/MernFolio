@@ -35,6 +35,7 @@ function Sambar({ id }) {
 
   const accountModalElement = (
     <Modal
+      modalId="account"
       onClose={() => { setAccountModal(false); }}
       animStart={ 
         [
@@ -73,7 +74,9 @@ function Sambar({ id }) {
         width: "512px"
       }}
       positionStyle={{
-        flexDirection: "row-reverse"
+        flexDirection: "row-reverse", 
+        left: 0, 
+        right: 0
       }}
       disableScroll={true}
     >
@@ -90,6 +93,7 @@ function Sambar({ id }) {
 
   const deleteAccountModalElement = (
     <Modal
+      modalId="deleteAccount"
       onClose={() => { setDeleteAccountModal(false); }}
       animStart={ 
         [
@@ -124,6 +128,10 @@ function Sambar({ id }) {
         ] 
       }
       style={{ left: "0px", right: "0px", top: "200px", width: "800px" }}
+      positionStyle={{ 
+        left: 0, 
+        right: 0
+      }}
     >
       <h1>hi</h1>
     </Modal>
