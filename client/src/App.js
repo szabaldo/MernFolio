@@ -5,11 +5,13 @@ import MainPage from './MainPage.js';
 
 const UserContext = createContext();
 const ModalContext = createContext();
+const IntroContext = createContext();
 
 function App() {
   const [user, setUser] = useState(null);
-  const modalList = useRef([]); 
-  modalList.lastLength = 0; 
+  const modalList = useRef([]);
+  const isIntro = useRef(true);
+  modalList.lastLength = 0;
 
   useEffect(() => {
     async function getUserSession() {
@@ -25,15 +27,23 @@ function App() {
     getUserSession();
   }, []);
 
+  useEffect(() => {
+    setTimeout(() => {
+      isIntro.current = false;
+    }, 500);
+  });
+
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <ModalContext.Provider value={modalList} >
-        <Sambar id="sambar"/>
-        <MainPage id="mainPage"/>
+      <ModalContext.Provider value={modalList}>
+        <IntroContext.Provider value={isIntro}>
+          <Sambar id="sambar" />
+          <MainPage id="mainPage" />
+        </IntroContext.Provider>
       </ModalContext.Provider>
     </UserContext.Provider>
   );
 }
 
-export { UserContext, ModalContext };
+export { UserContext, ModalContext, IntroContext };
 export default App;

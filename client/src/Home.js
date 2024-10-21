@@ -1,13 +1,15 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Outlet, useOutletContext } from 'react-router-dom';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import CommentsPane from './CommentsPane.js';
 import Header from './Header.js';
-import { UserContext } from './App.js';
+import { UserContext, IntroContext } from './App.js';
+import Modal from './Modal.js';
 
 function Home() {
     const { user, setUser } = useContext(UserContext);
-    const isIntro = useOutletContext();
+    // const isIntro = useOutletContext();
+    const isIntro = useContext(IntroContext);
     const [comment, setComment] = useState("");
     const [commentSubmitted, setCommentSubmitted] = useState(false);
 
@@ -22,36 +24,35 @@ function Home() {
         });
         const res = await response.json();
         console.log(res);
-        // const content = (
-        //     <Container>
-        //         <Row className="py-1">
-        //             <h2 className="large-text d-flex justify-content-center">Thanks!</h2>
-        //             <br />
-        //             <p className="medium-text d-flex justify-content-center">Your comment is under review and will appear on the website once approved.</p>
-        //         </Row>
-        //     </Container>
-        // );
 
-        // const params = {
-        //     inner: content,
-        //     width: "inner-width",
-        //     left: "0",
-        //     right: "0",
-        //     animStart: "rise-fade-middle", 
-        //     animEnd: "rise-fade-middle-out"
-        // }
-        // setModalList(modalList.concat(params));
         document.getElementById("commentField").value = "";
         setComment("");
         setCommentSubmitted(true);
     }
+
+    useEffect(() => { // TODO turn this animation useEffect into a custom hook
+        if (isIntro.current) {
+            let elements = [];
+            elements.push(document.getElementById("portrait"));
+            elements.push(document.getElementById("commentBox"));
+            for (const element of elements) {
+                element?.animate({
+                    transform: ["translateY(250px)", "translate(0px)"],
+                    opacity: [0, 1]
+                }, {
+                    duration: Math.ceil(Math.random() * 1000),
+                    easing: "ease",
+                });
+            }
+        }
+    });
 
     const handleChange = (e) => {
         setComment(e.target.value);
     }
 
     const commentBox = (
-        <div className={`${isIntro.current ? "rise-fade-dvs" : ""}`} id="commentBox">
+        <div id="commentBox">
             <Container>
                 <Form>
                     <Row>
@@ -69,6 +70,60 @@ function Home() {
                     </Col>
                 </Row>
             </Container>
+            {commentSubmitted && <Modal
+                modalId="commentBox"
+                onClose={() => { setCommentSubmitted(false); }}
+                animStart={
+                    [
+                        { 
+                            keyframes: {
+                                opacity: [0, 1]
+                            }, 
+                            duration: {
+                                duration: 250,
+                                fill: "forwards",
+                                easing: "ease"
+                            }  
+                        }, 
+                        { 
+                            keyframes: {
+                                transform: ["translateY(-50px) scale(110%)", "translateY(0px) scale(100%)"]
+                            }, 
+                            duration: {
+                                duration: 250,
+                                fill: "forwards",
+                                easing: "ease"
+                            } 
+                        }
+                    ]
+                }
+                animEnd={
+                    [
+                        { 
+                            keyframes: {
+                                opacity: [0], 
+                                transform: ["translateY(0px) scale(100%)", "translateY(35px) scale(90%)"]
+                            },
+                            duration: {
+                                duration: 300,
+                                fill: "forwards",
+                                easing: "ease"
+                            } 
+                        }
+                    ]
+                }
+                style={{
+                    width: "512px",
+                }}
+            >
+                <Container>
+                    <Row className="py-1">
+                        <h2 className="large-text d-flex justify-content-center">Thanks!</h2>
+                        <br />
+                        <p className="medium-text d-flex justify-content-center">Your comment is under review and will appear on the website once approved.</p>
+                    </Row>
+                </Container>
+            </Modal>}
         </div>
     );
 
@@ -80,7 +135,7 @@ function Home() {
                 linkText={headerOpts.linkText}
                 linkTo={headerOpts.linkTo}
             />
-            <img src="portrait.jpg" className={`d-flex align-items-center m-auto mb-3 portrait ${isIntro.current ? "rise-fade-ds" : ""}`} />
+            <img src="portrait.jpg" className="d-flex align-items-center m-auto mb-3 portrait" id="portrait"/>
             {user && commentBox}
             <Container>
                 <Row className="py-5">

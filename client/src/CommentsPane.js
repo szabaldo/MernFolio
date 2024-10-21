@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Comment from './Comment.js';
-import { UserContext } from './App.js';
+import { UserContext, IntroContext } from './App.js';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { useOutletContext } from 'react-router-dom'; 
-
+import { useOutletContext } from 'react-router-dom';
 
 function CommentsPane({ status, admin = false }) {
-    const isIntro = useOutletContext(); 
+    // const isIntro = useOutletContext();
+    const isIntro = useContext(IntroContext); 
     const noCommentsMessage = (
         <div>
             <h1 className="xl-text d-flex justify-content-center">Comments</h1>
@@ -17,7 +17,19 @@ function CommentsPane({ status, admin = false }) {
     const [commentsElements, setCommentsElements] = useState(noCommentsMessage);
     const [comments, setComments] = useState([]);
     const { user, setUser } = useContext(UserContext);
-    
+
+    useEffect(() => {
+        if (isIntro.current) {
+            const commentsPane = document.getElementById("commentsPane");
+            commentsPane.animate({
+                transform: ["translateY(250px)", "translate(0px)"],
+                opacity: [0, 1]
+            }, {
+                duration: Math.ceil(Math.random() * 1000),
+                easing: "ease",
+            });
+        }
+    }, []);
 
     const approveClick = async (event) => {
         const commentId = event.target.id;
@@ -131,8 +143,7 @@ function CommentsPane({ status, admin = false }) {
     }, [comments])
 
     return (
-        <div className={isIntro.current ? "rise-fade-dvs" : ""} >
-
+        <div id="commentsPane">
             <Container className="border border-secondary rounded" id="pane" >
                 {commentsElements}
             </Container>

@@ -96,20 +96,20 @@ function Login() {
                         <Row>
                             <Form>
                                 {errors.username && <div><br /><h3 className="text-danger large-text">{errors.username}</h3></div>}
-                                <Form.Group className={`mb-3 ${isIntro.current ? "rise-fade-dvf" : ""}`} controlId="formUsername">
+                                <Form.Group className="mb-3" controlId="formUsername">
                                     <Form.Label>Username</Form.Label>
                                     <Form.Control type="text" placeholder="Enter username" onChange={handleChange} value={formData.username} name="username" />
                                 </Form.Group>
 
                                 {errors.password && <div><br /><h3 className="text-danger large-text">{errors.password}</h3></div>}
-                                <Form.Group className={`mb-3 ${isIntro.current ? "rise-fade-ds" : ""}`} controlId="formPassword">
+                                <Form.Group className="mb-3" controlId="formPassword">
                                     <Form.Label>Password</Form.Label>
                                     <Form.Control type="password" placeholder="Password" onChange={handleChange} value={formData.password} name="password" />
                                     <Form.Text className="text-danger">
                                         This site is not secure! DO NOT use a real password.
                                     </Form.Text>
                                 </Form.Group>
-                                <Form.Group className={`${isIntro.current ? "rise-fade-dvs" : ""}`}>
+                                <Form.Group>
                                     <Button onClick={loginClick} variant="primary"  disabled={Object.keys(errors).length > 0}>
                                         Login
                                     </Button>
