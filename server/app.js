@@ -217,6 +217,14 @@ app.delete('/delete', async (req, res) => {
     res.json({ message: message });
 });
 
+app.delete('/delete-account', async (req, res) => {
+    cred.deleteAccount(req.body.userid);
+    const message = `account and comments deleted`;
+    console.log(message);
+    // res.redirect(200, '/logout'); 
+    res.status(200).json({ message: message });
+});
+
 app.put('/hide', async (req, res) => {
     cred.hideComment(req.body.commentId);
     const message = `comment hidden`;

@@ -105,7 +105,7 @@ function Sambar({ id }) {
         </Row>
         <Row className="px-3 pb-3 d-flex justify-content-center large-text">
           <Form>
-            <Form.Switch label="Show only your comments" reverse={true} checked={preferences.showUserCommentsOnly} className="w-fit-content mx-auto" onClick={(e) => {setPreferences({showUserCommentsOnly: e.target.checked}); localStorage.showUserCommentsOnly = e.target.checked; }} />
+            <Form.Switch label="Show only your comments" reverse={true} checked={preferences.showUserCommentsOnly != null ? preferences.showUserCommentsOnly : false} className="w-fit-content mx-auto" onChange={(e) => {setPreferences({showUserCommentsOnly: e.target.checked}); localStorage.showUserCommentsOnly = e.target.checked; }} />
           </Form>
         </Row>
         <Row>
@@ -114,6 +114,21 @@ function Sambar({ id }) {
       </Container>
     </Modal>
   );
+
+  const handleDeleteAccount = async () => {
+    const response = await fetch(process.env.ORIGIN + "/delete-account", {
+      method: "DELETE",
+      body: JSON.stringify({userid: user.id}),
+      headers: { "Content-Type": "application/json" },
+      credentials: "include"
+    });
+    const res = await response.json();
+    console.log(response);
+    if (response.status == 200) {
+      logoutClick();
+      window.location.reload(); 
+    }
+  }
 
   const deleteAccountModalElement = (
     <Modal
@@ -161,7 +176,7 @@ function Sambar({ id }) {
           <p className="large-text">This will also delete all of your comments</p>
         </Row>
         <Row>
-          <Button className="w-fit-content m-auto" style={{ width: 150 }} onClick={() => { }} variant="danger">Delete Account</Button>
+          <Button className="w-fit-content m-auto" style={{ width: 150 }} onClick={handleDeleteAccount} variant="danger">Delete Account</Button>
         </Row>
       </Container>
     </Modal>
