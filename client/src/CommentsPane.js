@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
 import Comment from './Comment.js';
-import { UserContext, IntroContext } from './App.js';
+import { UserContext, IntroContext, PreferencesContext } from './App.js';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { useOutletContext } from 'react-router-dom';
 
 function CommentsPane({ status, admin = false }) {
-    // const isIntro = useOutletContext();
-    const isIntro = useContext(IntroContext); 
+    const isIntro = useContext(IntroContext);
     const noCommentsMessage = (
         <div>
             <h1 className="xl-text d-flex justify-content-center">Comments</h1>
@@ -15,8 +13,10 @@ function CommentsPane({ status, admin = false }) {
     );
 
     const [commentsElements, setCommentsElements] = useState(noCommentsMessage);
+    const [allComments, setAllComments] = useState([]);
     const [comments, setComments] = useState([]);
     const { user, setUser } = useContext(UserContext);
+    const { preferences, setPreferences } = useContext(PreferencesContext);
 
     useEffect(() => {
         if (isIntro.current) {
@@ -50,6 +50,7 @@ function CommentsPane({ status, admin = false }) {
             newComments.push(c);
         }
         setComments(newComments);
+        setAllComments(newComments);
     }
 
     const hideClick = async (event) => {
@@ -71,6 +72,7 @@ function CommentsPane({ status, admin = false }) {
             newComments.push(c);
         }
         setComments(newComments);
+        setAllComments(newComments);
     }
 
     const deleteClick = async (event) => {
@@ -91,6 +93,7 @@ function CommentsPane({ status, admin = false }) {
             }
         }
         setComments(newComments);
+        setAllComments(newComments);
     }
 
     useEffect(() => {
@@ -106,13 +109,25 @@ function CommentsPane({ status, admin = false }) {
             console.log("Comments fetched: ");
             console.log(res.comments);
             setComments(res.comments);
+            setAllComments(res.comments);
         }
-        fetchComments()
+        fetchComments();
     }, [user]);
+
+    useEffect(() => {
+        if (localStorage.showUserCommentsOnly == "true") {
+            setComments(comments.filter((comment) => { return comment.userid == user?.id }));
+        } else {
+            setComments(allComments);
+        }
+    }, [preferences]);
 
     useEffect(() => {
         let c = noCommentsMessage;
         if (comments.length > 0) {
+            comments.sort((a, b) => {
+                return b.dateposted - a.dateposted;
+            });
             c = comments.map((comment) => {
                 const showApprove = admin && (comment.status != "approved");
                 const showHide = admin && (comment.status != "hidden");

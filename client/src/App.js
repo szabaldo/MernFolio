@@ -6,11 +6,13 @@ import MainPage from './MainPage.js';
 const UserContext = createContext();
 const ModalContext = createContext();
 const IntroContext = createContext();
+const PreferencesContext = createContext(); 
 
 function App() {
   const [user, setUser] = useState(null);
   const modalList = useRef([]);
   const isIntro = useRef(true);
+  const [preferences, setPreferences] = useState({showUsershowUserCommentsOnly: false});
   modalList.lastLength = 0;
 
   useEffect(() => {
@@ -37,13 +39,15 @@ function App() {
     <UserContext.Provider value={{ user, setUser }}>
       <ModalContext.Provider value={modalList}>
         <IntroContext.Provider value={isIntro}>
-          <Sambar id="sambar" />
-          <MainPage id="mainPage" />
+          <PreferencesContext.Provider value={{preferences, setPreferences}}>
+            <Sambar id="sambar" />
+            <MainPage id="mainPage" />
+          </PreferencesContext.Provider>
         </IntroContext.Provider>
       </ModalContext.Provider>
     </UserContext.Provider>
   );
 }
 
-export { UserContext, ModalContext, IntroContext };
+export { UserContext, ModalContext, IntroContext, PreferencesContext };
 export default App;

@@ -1,8 +1,8 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import React, { useContext, useState, useEffect, useRef } from 'react';
+import { Container, Row, Col, Button, Form } from 'react-bootstrap';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
-import { UserContext, IntroContext } from './App.js';
+import { UserContext, IntroContext, PreferencesContext } from './App.js';
 import Modal from './Modal.js';
 
 function Sambar({ id }) {
@@ -11,10 +11,10 @@ function Sambar({ id }) {
   const { user, setUser } = useContext(UserContext);
   const [accountModal, setAccountModal] = useState(false);
   const [deleteAccountModal, setDeleteAccountModal] = useState(false);
+  const {preferences, setPreferences} = useContext(PreferencesContext); 
   const navigate = useNavigate();
 
   useEffect(() => { // TODO turn this animation useEffect into a custom hook
-    console.log(location);
     if (isIntro.current && location.pathname == "/") {
       let elements = [];
       elements.push(document.getElementById("sambar"));
@@ -42,6 +42,7 @@ function Sambar({ id }) {
       setUser(null);
       navigate("/");
     }
+    setPreferences({showUserCommentsOnly: false})
   };
 
   let adminLink;
@@ -99,7 +100,13 @@ function Sambar({ id }) {
     >
       <Container>
         <Row>
-          <h1 className="xl-text d-flex justify-content-center">Account</h1>
+          <h1 className="xl-text d-flex justify-content-center mb-3">Account</h1>
+          <hr className="solid" />
+        </Row>
+        <Row className="px-3 pb-3 d-flex justify-content-center large-text">
+          <Form>
+            <Form.Switch label="Show only your comments" reverse={true} checked={preferences.showUserCommentsOnly} className="w-fit-content mx-auto" onClick={(e) => {setPreferences({showUserCommentsOnly: e.target.checked}); localStorage.showUserCommentsOnly = e.target.checked; }} />
+          </Form>
         </Row>
         <Row>
           <Button className="w-fit-content m-auto" onClick={() => { setDeleteAccountModal(true); }} variant="danger">Delete Account</Button>
@@ -144,9 +151,19 @@ function Sambar({ id }) {
           }
         ]
       }
-      style={{ width: "800px" }}
+      style={{ width: 512 }}
     >
-      <h1>hi</h1>
+      <Container>
+        <Row className="mb-3">
+          <h1 className="xl-text d-flex justify-content-center mb-3">Are you sure?</h1>
+        </Row>
+        <Row className="d-flex justify-content-center mx-auto">
+          <p className="large-text">This will also delete all of your comments</p>
+        </Row>
+        <Row>
+          <Button className="w-fit-content m-auto" style={{ width: 150 }} onClick={() => { }} variant="danger">Delete Account</Button>
+        </Row>
+      </Container>
     </Modal>
   );
 
