@@ -159,6 +159,7 @@ function CommentsPane({ status, admin = false }) {
 
     return (
         <div id="commentsPane">
+            <h1 className="mx-3 xl-text">Comments</h1>
             <Container className="border border-secondary rounded" id="pane" >
                 {commentsElements}
             </Container>

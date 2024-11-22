@@ -203,7 +203,7 @@ function Sambar({ id }) {
                     <h5 className="d-flex align-items-center justify-content-center nav-link large-text m-0 position-relative h-0 t-50">
                       {user.fname}
                     </h5>
-                    <img src="down_arrow.svg" className="d-flex l-0 r-0 mx-auto invert-color position-relative" style={{ width: "30px", top: "65%" }} id="accountArrow" />
+                    <img src="down_arrow.svg" className="d-flex l-0 r-0 mx-auto invert-color position-relative hover-grow" style={{ width: "30px", top: "65%" }} id="accountArrow" />
                   </u>
                 </div>
               )}

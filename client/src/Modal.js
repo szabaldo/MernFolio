@@ -84,7 +84,7 @@ function Modal({
             <div className="position-fixed bg-black t-0 l-0 h-100vh w-100vw overflow-hidden" style={{ zIndex: style.zIndex, opacity: 0.5 }} id="modalBackground" name="modalBackground" />
             <Container className="position-absolute p-3 rounded border shadow bg-white" style={style} id="modalBox" name="modalBox">
                 <Row>
-                    <img src="x.png" className="cursor-pointer" style={{ width: "50px" }} onClick={() => close(onClose)}></img>
+                    <img src="x.png" className="cursor-pointer hover-grow" style={{ width: 50 }} onClick={() => close(onClose)}></img>
                 </Row>
                 <Row>
                     {children}

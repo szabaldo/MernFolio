@@ -20,7 +20,6 @@ root.render(
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
                     <Route path="admin" element={<Admin />} />
-                    <Route path="account/:userId" element={<Account />} />
                 </Route>
             </Routes>
         {/* </React.StrictMode> */}

@@ -1,7 +1,7 @@
 :root {
     --min-width: 320px;
     --inner-width: 512px;
-    --dialog-width: 200px; 
+    --dialog-width: 200px;
     --max-width: 1024px;
     --small-text: 12px;
     --medium-text: 16px;
@@ -32,7 +32,7 @@
 }
 
 .dialog-width {
-    width: var(--dialog-width); 
+    width: var(--dialog-width);
 }
 
 .max-width {
@@ -40,11 +40,11 @@
 }
 
 .w-100vw {
-    width: 100vw; 
+    width: 100vw;
 }
 
 .h-100vh {
-    height: 100vh; 
+    height: 100vh;
 }
 
 .small-text {
@@ -68,11 +68,11 @@
 }
 
 .bg-primary {
-    background-color: var(--bg-primary) !important; 
+    background-color: var(--bg-primary) !important;
 }
 
 .bg-secondary {
-    background-color: var(--bg-secondary) !important; 
+    background-color: var(--bg-secondary) !important;
 }
 
 .border-alert {
@@ -89,11 +89,6 @@
     box-shadow: 0px 0px 25px 25px rgba(0, 0, 0, 0.15);
 }
 
-.portrait {
-    max-width: 256px;
-    border-radius: 50%; 
-}
-
 .h-0 {
     height: 0 !important;
 }
@@ -103,33 +98,46 @@
 }
 
 .r-0 {
-    right: 0; 
+    right: 0;
 }
 
 .l-0 {
-    left: 0; 
+    left: 0;
 }
 
 .t-0 {
-    top: 0; 
+    top: 0;
 }
 
 .t-50 {
-    top: 50%; 
+    top: 50%;
 }
 
 .b-0 {
-    bottom: 0; 
+    bottom: 0;
 }
 
 .invert-color {
-    filter: invert(1); 
+    filter: invert(1);
 }
 
 .cursor-pointer {
-    cursor: pointer; 
+    cursor: pointer;
 }
 
-.w-fit-content { 
-    width: fit-content; 
+.w-fit-content {
+    width: fit-content;
+}
+
+.h-fit-content {
+    height: fit-content;
+}
+
+.hover-grow {
+    transition: transform 0.125s ease;
+}
+
+.hover-grow:hover {
+    /* transform: scale(1.25) translateY(-5px) rotateZ(360deg); */
+    transform: scale(1.25) translateY(-5px);
 }

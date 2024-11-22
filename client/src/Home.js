@@ -1,17 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Outlet, useOutletContext } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import CommentsPane from './CommentsPane.js';
 import Header from './Header.js';
 import { UserContext, IntroContext } from './App.js';
 import Modal from './Modal.js';
+import Skills from './Skills.js';
+// import skills from './skills.json' with {type: 'json'};
 
 function Home() {
     const { user, setUser } = useContext(UserContext);
-    // const isIntro = useOutletContext();
     const isIntro = useContext(IntroContext);
     const [comment, setComment] = useState("");
     const [commentSubmitted, setCommentSubmitted] = useState(false);
+    // const [skillsModal, setSkillsModal] = useState("");
 
     const headerOpts = user ? { subtitle: "", linkText: "", linkTo: "" } : { subtitle: "You are not logged in", linkText: "Log in", linkTo: "/login" }
 
@@ -33,17 +35,30 @@ function Home() {
     useEffect(() => { // TODO turn this animation useEffect into a custom hook
         if (isIntro.current) {
             let elements = [];
-            elements.push(document.getElementById("portrait"));
+            // elements.push(document.getElementById("portrait"));
             elements.push(document.getElementById("commentBox"));
             for (const element of elements) {
                 element?.animate({
                     transform: ["translateY(250px)", "translate(0px)"],
                     opacity: [0, 1]
                 }, {
-                    duration: Math.ceil(Math.random() * 1000),
+                    duration: Math.ceil(Math.random() * 1000) + 2000,
                     easing: "ease",
                 });
             }
+
+            // let elements2 = [];
+            // elements.push(document.getElementById("portrait"));
+            // for (const element of elements) {
+            //     element?.animate({
+            //         // transform: ["translateY(250px)", "translate(0px)"],
+            //         transform: ["scale(0.1)", "scale(1)"]
+            //         // opacity: [0, 1]
+            //     }, {
+            //         duration: Math.ceil(Math.random() * 1000) + 2000,
+            //         easing: "ease",
+            //     });
+            // }
         }
     });
 
@@ -75,40 +90,40 @@ function Home() {
                 onClose={() => { setCommentSubmitted(false); }}
                 animStart={
                     [
-                        { 
+                        {
                             keyframes: {
                                 opacity: [0, 1]
-                            }, 
+                            },
                             duration: {
                                 duration: 250,
                                 fill: "forwards",
                                 easing: "ease"
-                            }  
-                        }, 
-                        { 
+                            }
+                        },
+                        {
                             keyframes: {
                                 transform: ["translateY(-50px) scale(110%)", "translateY(0px) scale(100%)"]
-                            }, 
+                            },
                             duration: {
                                 duration: 250,
                                 fill: "forwards",
                                 easing: "ease"
-                            } 
+                            }
                         }
                     ]
                 }
                 animEnd={
                     [
-                        { 
+                        {
                             keyframes: {
-                                opacity: [0], 
+                                opacity: [0],
                                 transform: ["translateY(0px) scale(100%)", "translateY(35px) scale(90%)"]
                             },
                             duration: {
                                 duration: 300,
                                 fill: "forwards",
                                 easing: "ease"
-                            } 
+                            }
                         }
                     ]
                 }
@@ -128,23 +143,51 @@ function Home() {
     );
 
     return (
-        <div>
-            <Header
-                title="Home"
-                subtitle={headerOpts.subtitle}
-                linkText={headerOpts.linkText}
-                linkTo={headerOpts.linkTo}
-            />
-            <img src="portrait.jpg" className="d-flex align-items-center m-auto mb-3 portrait" id="portrait"/>
-            {user && commentBox}
+        <Container>
+            <Row>
+                <Header
+                    title="Full Stack Developer"
+                    subtitle={headerOpts.subtitle}
+                    linkText={headerOpts.linkText}
+                    linkTo={headerOpts.linkTo}
+                />
+            </Row>
+
+            <Row>
+                <Skills />
+            </Row>
+
+            {user && <Row>{commentBox}</Row>}
             <Container>
                 <Row className="py-5">
                     <CommentsPane status="approved" />
                 </Row>
             </Container>
             <Outlet />
-        </div>
+        </Container>
     );
+
+    // return (
+    //     <div>
+    //         <Header
+    //             title="Home"
+    //             subtitle={headerOpts.subtitle}
+    //             linkText={headerOpts.linkText}
+    //             linkTo={headerOpts.linkTo}
+    //         />
+    //         <img src="portrait.jpg" className="d-flex align-items-center m-auto mb-3 portrait" id="portrait" />
+    //         {user && commentBox}
+    //         <Container>
+    //             <Row className="py-5">
+    //                 <CommentsPane status="approved" />
+    //             </Row>
+    //             <Row className="py-5">
+    //                 {wordCloud}
+    //             </Row>
+    //         </Container>
+    //         <Outlet />
+    //     </div>
+    // );
 }
 
 export default Home;
