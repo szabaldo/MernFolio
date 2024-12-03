@@ -2,49 +2,130 @@
     "node": {
         "id": "node",
         "title": "Node.js", 
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam accumsan posuere lacus sed varius. Integer ultrices vehicula aliquam. Sed sed convallis metus, quis vehicula dui.",
+        "description": "",
+        "yoe": 1,
         "color": "#8ac500"
     },
     "bootstrap": {
         "id": "bootstrap",
         "title": "Bootstrap", 
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam accumsan posuere lacus sed varius. Integer ultrices vehicula aliquam. Sed sed convallis metus, quis vehicula dui.",
+        "description": "",
+        "yoe": 1,
         "color": "#7952b3"
     },
     "docker": {
         "id": "docker",
         "title": "Docker", 
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam accumsan posuere lacus sed varius. Integer ultrices vehicula aliquam. Sed sed convallis metus, quis vehicula dui.",
+        "description": "",
+        "yoe": 1,
         "color": "#006db8"
     },
     "ec2": {
         "id": "ec2",
         "title": "AWS EC2", 
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam accumsan posuere lacus sed varius. Integer ultrices vehicula aliquam. Sed sed convallis metus, quis vehicula dui.",
+        "description": "",
+        "yoe": 1,
         "color": "#f68536"
     },
     "mysql": {
         "id": "mysql",
         "title": "MySQL", 
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam accumsan posuere lacus sed varius. Integer ultrices vehicula aliquam. Sed sed convallis metus, quis vehicula dui.",
+        "description": "",
+        "yoe": 1,
         "color": "#00608c"
     },
     "react": {
         "id": "react",
         "title": "React.js", 
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam accumsan posuere lacus sed varius. Integer ultrices vehicula aliquam. Sed sed convallis metus, quis vehicula dui.",
+        "description": "",
+        "yoe": 2,
         "color": "#00d8ff"
-    },
-    "typescript": {
-        "id": "typescript",
-        "title": "TypeScript", 
-        "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam accumsan posuere lacus sed varius. Integer ultrices vehicula aliquam. Sed sed convallis metus, quis vehicula dui.",
-        "color": "#007acc"
     },
     "javascript": {
         "id": "javascript",
         "title": "JavaScript", 
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam accumsan posuere lacus sed varius. Integer ultrices vehicula aliquam. Sed sed convallis metus, quis vehicula dui.",
         "color": "#e9ca32"
+    }, 
+    "csharp": {
+        "id": "csharp", 
+        "title": "C#",
+        "description": "",
+        "yoe": 2,
+        "color": "#b14796"
+    }, 
+    "hii": {
+        "id": "hii", 
+        "title": "HII Mission Technologies",
+        "description": "Formerly Alion Science and Technologies",
+        "yoe": 3,
+        "color": "#093b4d"
+    }, 
+    "ud": {
+        "id": "ud",
+        "title": "University of Delaware",
+        "description": "", 
+        "color": "#0069aa"
+    }, 
+    "python": {
+        "id": "python", 
+        "title": "Python", 
+        "description": "", 
+        "yoe": 1,
+        "color": "#ffc107"
+    }, 
+    "java": {
+        "id": "java", 
+        "title": "Java",
+        "description": "", 
+        "color": "#de8e2f" 
+    }, 
+    "rust": {
+        "id": "rust", 
+        "title": "Rust",
+        "description": "",
+        "color": "#75432a"
+    }, 
+    "installshield": {
+        "id": "installshield", 
+        "title": "InstallShield",
+        "description": "",
+        "yoe": 1,
+        "color": "#023d79"
+    },
+    "langchain": {
+        "id": "langchain", 
+        "title": "LangChain", 
+        "description": "",
+        "yoe": 1
+    },
+    "vb6": {
+        "id": "vb6", 
+        "title": "Visual Basic 6",
+        "description": "",
+        "yoe": 1,
+        "color": "#e28f39"
+    },
+    "leader": {
+        "id": "leader",
+        "title": "Technical Lead",
+        "description": "", 
+        "yoe": 1
+    },
+    "cycle": {
+        "id": "cycle",
+        "title": "Full Dev Cycles", 
+        "description": "", 
+        "yoe": 2
+    }, 
+    "learning": {
+        "id": "learning", 
+        "title": "Immediate Asset", 
+        "description": ""
+    }, 
+    "customer": {
+        "id": "customer", 
+        "title": "Customer-Facing",
+        "description": ""
     }
 }

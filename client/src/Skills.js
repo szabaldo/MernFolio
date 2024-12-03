@@ -20,6 +20,7 @@ function Skills() {
     // const portraitCircleLarge = `circle(${defaultPortraitState.portraitContainerHeight / 2}px at ${defaultPortraitState.portraitContainerHeight / 2}px center)`; 
     const portraitCircleSmall = `circle(${defaultPortraitState.portraitRadius / 2}px at ${defaultPortraitState.portraitRadius / 2}px ${skillsState.portraitRadius / 2}px)`;
     const portraitCircleLarge = `circle(${defaultPortraitState.portraitContainerHeight / 2}px at ${defaultPortraitState.portraitContainerHeight / 2}px center)`; 
+    const defaultBgColor = "#606060";
 
     useEffect(() => {
         if (isIntro) {
@@ -155,7 +156,7 @@ function Skills() {
                             width: defaultPortraitState.portraitContainerHeight,
                             height: defaultPortraitState.portraitContainerHeight,
                             display: "flex",
-                            backgroundColor: skills[skillsState.portraitInfo].color,
+                            backgroundColor: (skills[skillsState.portraitInfo].color != null) ? skills[skillsState.portraitInfo].color : defaultBgColor,
                         }}>
                             <div style={{
                                 width: Math.sqrt((defaultPortraitState.portraitContainerHeight * defaultPortraitState.portraitContainerHeight) / 2),
