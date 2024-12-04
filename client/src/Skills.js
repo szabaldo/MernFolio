@@ -4,6 +4,7 @@ import skills from './skills.json' with {type: 'json'};
 import Modal from './Modal';
 import { IntroContext } from './App.js';
 import Skill from './Skill.js';
+import SkillInfo from './SkillInfo.js';
 
 function Skills() {
     const isIntro = useContext(IntroContext);
@@ -19,7 +20,7 @@ function Skills() {
     // const portraitCircleSmall = `circle(${defaultPortraitState.portraitRadius / 2}px at ${defaultPortraitState.portraitRadius / 2}px ${skillsState.portraitRadius / 2}px)`;
     // const portraitCircleLarge = `circle(${defaultPortraitState.portraitContainerHeight / 2}px at ${defaultPortraitState.portraitContainerHeight / 2}px center)`; 
     const portraitCircleSmall = `circle(${defaultPortraitState.portraitRadius / 2}px at ${defaultPortraitState.portraitRadius / 2}px ${skillsState.portraitRadius / 2}px)`;
-    const portraitCircleLarge = `circle(${defaultPortraitState.portraitContainerHeight / 2}px at ${defaultPortraitState.portraitContainerHeight / 2}px center)`; 
+    const portraitCircleLarge = `circle(${defaultPortraitState.portraitContainerHeight / 2}px at ${defaultPortraitState.portraitContainerHeight / 2}px center)`;
     const defaultBgColor = "#606060";
 
     useEffect(() => {
@@ -82,11 +83,11 @@ function Skills() {
             }
 
             setTimeout(() => {
-                setSkillsState({ 
-                    ...skillsState, 
-                    portraitInfo: skill, 
-                    portraitRadius: defaultPortraitState.portraitContainerHeight, 
-                    iconWidth: 64, 
+                setSkillsState({
+                    ...skillsState,
+                    portraitInfo: skill,
+                    portraitRadius: defaultPortraitState.portraitContainerHeight,
+                    iconWidth: 64,
                 })
             }, duration);
         }
@@ -165,25 +166,21 @@ function Skills() {
                                 textAlign: "left",
                             }}>
                                 <img src="x.png" className="cursor-pointer hover-grow" style={{ width: 30 }} onClick={onClose}></img>
-                                <Container>
-                                    <Row className="py-1">
-                                        <h2 className="large-text d-flex justify-content-center">{skills[skillsState.portraitInfo].title}</h2>
-                                        <br />
-                                        <p className="medium-text d-flex justify-content-center">{skills[skillsState.portraitInfo].description}</p>
-                                    </Row>
-                                </Container>
+                                <SkillInfo skill={skillsState.portraitInfo} />
                             </div>
                         </div>
                     )
                 }
             </div>
-                {
-                    Object.keys(skills).map((skill) => {
+            {
+                Object.keys(skills).map((skill) => {
+                    if (skills[skill].isRoot === true) {
                         return (
                             <Skill skill={skill} onClick={onSkillClick} iconWidth={skillsState.iconWidth}></Skill>
                         )
-                    })
-                }
+                    }
+                })
+            }
         </Container >
     );
 }

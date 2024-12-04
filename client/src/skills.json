@@ -2,9 +2,10 @@
     "node": {
         "id": "node",
         "title": "Node.js", 
-        "description": "",
+        "description": "d",
         "yoe": 1,
-        "color": "#8ac500"
+        "color": "#8ac500",
+        "isRoot": true
     },
     "bootstrap": {
         "id": "bootstrap",
@@ -39,40 +40,46 @@
         "title": "React.js", 
         "description": "",
         "yoe": 2,
-        "color": "#00d8ff"
+        "color": "#00d8ff",
+        "isRoot": true
     },
     "javascript": {
         "id": "javascript",
         "title": "JavaScript", 
         "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam accumsan posuere lacus sed varius. Integer ultrices vehicula aliquam. Sed sed convallis metus, quis vehicula dui.",
-        "color": "#e9ca32"
+        "color": "#e9ca32",
+        "isRoot": true
     }, 
     "csharp": {
         "id": "csharp", 
         "title": "C#",
         "description": "",
         "yoe": 2,
-        "color": "#b14796"
+        "color": "#b14796",
+        "isRoot": true
     }, 
     "hii": {
         "id": "hii", 
         "title": "HII Mission Technologies",
         "description": "Formerly Alion Science and Technologies",
         "yoe": 3,
-        "color": "#093b4d"
+        "color": "#093b4d",
+        "isRoot": true
     }, 
     "ud": {
         "id": "ud",
         "title": "University of Delaware",
         "description": "", 
-        "color": "#0069aa"
+        "color": "#0069aa",
+        "isRoot": true
     }, 
     "python": {
         "id": "python", 
         "title": "Python", 
         "description": "", 
         "yoe": 1,
-        "color": "#ffc107"
+        "color": "#ffc107",
+        "isRoot": true
     }, 
     "java": {
         "id": "java", 
@@ -97,7 +104,8 @@
         "id": "langchain", 
         "title": "LangChain", 
         "description": "",
-        "yoe": 1
+        "yoe": 1,
+        "isRoot": true
     },
     "vb6": {
         "id": "vb6", 
@@ -110,22 +118,32 @@
         "id": "leader",
         "title": "Technical Lead",
         "description": "", 
-        "yoe": 1
+        "yoe": 1,
+        "isRoot": true
     },
     "cycle": {
         "id": "cycle",
         "title": "Full Dev Cycles", 
         "description": "", 
-        "yoe": 2
+        "yoe": 2,
+        "isRoot": true
     }, 
     "learning": {
         "id": "learning", 
         "title": "Immediate Asset", 
-        "description": ""
+        "description": "",
+        "isRoot": true
     }, 
     "customer": {
         "id": "customer", 
         "title": "Customer-Facing",
-        "description": ""
+        "description": "",
+        "isRoot": true
+    }, 
+    "portfolio": {
+        "id": "portfolio", 
+        "title": "Portfolio", 
+        "description": "",
+        "isRoot": true
     }
 }
