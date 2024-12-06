@@ -13,7 +13,7 @@ function Home() {
     const isIntro = useContext(IntroContext);
     const [comment, setComment] = useState("");
     const [commentSubmitted, setCommentSubmitted] = useState(false);
-    // const [skillsModal, setSkillsModal] = useState("");
+    const [skillsState, setSkillsState] = useState({ title: "Full Stack Developer"})
 
     const headerOpts = user ? { subtitle: "", linkText: "", linkTo: "" } : { subtitle: "You are not logged in", linkText: "Log in", linkTo: "/login" }
 
@@ -146,7 +146,7 @@ function Home() {
         <Container>
             <Row>
                 <Header
-                    title="Full Stack Developer"
+                    title={skillsState.title}
                     subtitle={headerOpts.subtitle}
                     linkText={headerOpts.linkText}
                     linkTo={headerOpts.linkTo}
@@ -154,7 +154,7 @@ function Home() {
             </Row>
 
             <Row>
-                <Skills />
+                <Skills headerState={skillsState} setHeaderState={setSkillsState} />
             </Row>
 
             {user && <Row>{commentBox}</Row>}

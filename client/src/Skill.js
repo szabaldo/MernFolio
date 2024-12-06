@@ -18,7 +18,7 @@ function Skill({ skill, onClick, iconWidth }) {
             <div name="skill" className="p-2 d-inline-flex flex-column align-items-center w-fit-content h-fit-content position-relative" style={{ zIndex: 1 }} >
                 <img
                     onClick={() => { onClick(skill) }}
-                    key={`${skills[skill].id}`}
+                    key={skill}
                     src={`skills/${skills[skill].id}.png`}
                     style={{ width: iconWidth, height: iconWidth, borderRadius: "25%" }}
                     className="hover-grow"
