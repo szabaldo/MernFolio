@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext, createElement } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import skills from './skills.json' with {type: 'json'};
-import Modal from './Modal';
 import { IntroContext } from './App.js';
 import Skill from './Skill.js';
 import { Carousel, CarouselItem } from './Carousel.js';
@@ -12,7 +11,8 @@ function Skills({ headerState, setHeaderState }) {
     const isIntro = useContext(IntroContext);
     const [skillsState, setSkillsState] = useState({
         portraitSlot: "portrait.jpg",
-        selectedSkill: null
+        // selectedSkill: null,
+        isPortrait: (window.innerWidth < window.innerHeight),
     });
     const skillsElements = Object.values(skills).map((skill) => {
         return (
@@ -50,7 +50,8 @@ function Skills({ headerState, setHeaderState }) {
                 element.animate(Anim.fadeIn, Anim.fadeInOptions)
             };
         }
-    });
+        window.addEventListener("resize", () => { setSkillsState({ ...skillsState, isPortrait: (window.innerWidth < window.innerHeight) }) }, false);
+    }, []);
 
     const skillToInfo = (skill) => {
         let info;
@@ -322,7 +323,24 @@ function SkillsInfo({ info, relatedSkills, headerState, setHeaderState, skillsSt
 
     useEffect(() => {
         if (skillsState.mainSkillSlideFlag == true) {
-            document.getElementById("portrait").animate(Anim.portraitAppearLeft, Anim.portraitAppearLeftOptions);
+            // document.getElementById("portrait").animate(Anim.portraitAppearLeft, Anim.portraitAppearLeftOptions);
+            const appearLeftElements = [
+                // document.getElementById("related-skills"),
+                document.getElementById("portrait")
+            ];
+            for (let element of appearLeftElements) {
+                element.animate(Anim.portraitAppearLeft, Anim.portraitAppearLeftOptions)
+            };
+            // document.getElementById("portraitContainer").animate(
+            //     {
+            //         maxWidth: ["1000px", `${skillIconWidth}px`]
+            //     },
+            //     {
+            //         duration: Anim.fadeInOptions.duration,
+            //         easing: "ease-in",
+            //         fill: "forwards"
+            //     }
+            // );
             const fadeInElements = [
                 ...document.getElementsByClassName("related-skills"),
                 document.getElementById("allSkillsRow")
@@ -342,237 +360,135 @@ function SkillsInfo({ info, relatedSkills, headerState, setHeaderState, skillsSt
         setSkillsState({ ...skillsState, mainSkillSlideFlag: false });
     }, [skillsState.selectedSkill]);
 
-    // const infoPortion = 75;
-    const maxHeight = 512;
+    const maxHeight = skillsState.isPortrait ? 256 : 512;
     const skillIconWidth = 256;
+    const infoInnerWidth = skillIconWidth * 3 / 4; 
     return (
         <>
-            <Row className="py-3 justify-content-between">
+            <Row className="mb-3 py-3 justify-content-between">
                 <Col id="portraitContainer" style={{
-                    // maxWidth: `${infoPortion}%`,
                     maxHeight: maxHeight,
+                    maxWidth: skillsState.isPortrait ? skillIconWidth : "revert",
                     paddingLeft: 0,
                     paddingRight: 0,
-                    overflowY: "auto",
+                    overflowX: "hidden",
                 }}>
-                    <img id="portrait" src={skillsState.portraitSlot} style={{
+                    <img id="portrait" src={skillsState.portraitSlot} style={skillsState.isPortrait ? {
+                        width: skillIconWidth,
+                        height: skillIconWidth,
+                        overflow: "hidden",
+                        borderRadius: "10%",
+                        position: "relative", 
+                        zIndex: 5,
+                    } : {
                         maxWidth: skillIconWidth,
                         maxHeight: skillIconWidth,
+                        overflow: "hidden",
                         float: "left",
-                        borderRadius: "25%",
+                        borderRadius: "10%",
                         marginLeft: 25,
                         marginRight: 25,
                     }} />
-                    {info}
+                    {skillsState.isPortrait ? null : info}
                 </Col>
-                <Col md="auto" style={{
+                {/* <Col md={skillsState.isPortrait ? "unset" : "auto"} className="d-flex flex-column" style={{ */}
+                <Col className="d-flex flex-column" style={{
                     maxHeight: maxHeight,
+                    maxWidth: skillsState.isPortrait ? "none" : `${infoInnerWidth}px`
                 }}>
-                    <h3 className="large-text">Related Skills</h3>
+                    <h3 className="large-text text-center">Related Skills</h3>
                     <div className="related-skills d-flex flex-wrap" style={{
                         justifyContent: "center",
                         overflowX: "hidden",
                         overflowY: "auto",
                         maxHeight: `${maxHeight - 28 - 8}px`,
-                        maxWidth: `${192}px`
+                        // maxWidth: skillsState.isPortrait ? `null` : `${infoInnerWidth}px`
                     }}>
                         {relatedSkillsElements}
                     </div>
                 </Col>
             </Row>
+            {skillsState.isPortrait ? (
+                <Row className="py-5" style={{}}>
+                    {info}
+                </Row>
+            ) : (<></>)
+            }
         </>
     );
+
+
+    // return ((skillsState.isPortrait) ? (<>
+    //     <Row className="py-3 mb-3">
+    //         <Col md="auto" id="portraitContainer" style={{
+    //             maxHeight: maxHeight,
+    //             paddingLeft: 0,
+    //             paddingRight: 0,
+    //             overflowX: "hidden",
+    //         }}>
+    //             <img id="portrait" src={skillsState.portraitSlot} style={{
+    //                 width: skillIconWidth,
+    //                 height: skillIconWidth,
+    //                 overflow: "hidden",
+    //                 // float: "left",
+    //                 borderRadius: "10%",
+    //                 marginLeft: 25,
+    //                 marginRight: 25,
+    //             }} />
+    //         </Col>
+    //         <Col className="d-flex flex-column" style={{
+    //             maxHeight: maxHeight,
+    //         }}>
+    //             <h3 className="large-text text-center">Related Skills</h3>
+    //             <div className="related-skills d-flex flex-wrap" style={{
+    //                 justifyContent: "center",
+    //                 overflowX: "hidden",
+    //                 overflowY: "auto",
+    //                 maxHeight: `${maxHeight - 28 - 8}px`,
+    //                 // maxWidth: `${192}px`
+    //             }}>
+    //                 {relatedSkillsElements}
+    //             </div>
+    //         </Col>
+    //     </Row>
+    //     <Row className="my-3" style={{}}>
+    //         {info}
+    //     </Row>
+    // </>) : (<>
+    //     <Row className="py-3 justify-content-between">
+    //         <Col id="portraitContainer" style={{
+    //             maxHeight: maxHeight,
+    //             paddingLeft: 0,
+    //             paddingRight: 0,
+    //             overflowY: "auto",
+    //         }}>
+    //             <img id="portrait" src={skillsState.portraitSlot} style={{
+    //                 maxWidth: skillIconWidth,
+    //                 maxHeight: skillIconWidth,
+    //                 overflow: "hidden",
+    //                 float: "left",
+    //                 borderRadius: "10%",
+    //                 marginLeft: 25,
+    //                 marginRight: 25,
+    //             }} />
+    //             {info}
+    //         </Col>
+    //         <Col md="auto" style={{
+    //             maxHeight: maxHeight,
+    //         }}>
+    //             <h3 className="large-text text-center">Related Skills</h3>
+    //             <div className="related-skills d-flex flex-wrap" style={{
+    //                 justifyContent: "center",
+    //                 overflowX: "hidden",
+    //                 overflowY: "auto",
+    //                 maxHeight: `${maxHeight - 28 - 8}px`,
+    //                 maxWidth: `${192}px`
+    //             }}>
+    //                 {relatedSkillsElements}
+    //             </div>
+    //         </Col>
+    //     </Row>
+    // </>));
 }
 
 export default Skills;
-
-
-
-// import React, { useState, useEffect, useContext, createElement } from 'react';
-// import { Container, Row, Col } from 'react-bootstrap';
-// import skills from './skills.json' with {type: 'json'};
-// import Modal from './Modal';
-// import { IntroContext } from './App.js';
-// import Skill from './Skill.js';
-// import SkillInfo from './SkillInfo.js';
-
-// function Skills() {
-//     const isIntro = useContext(IntroContext);
-//     const duration = 150;
-//     const defaultPortraitState = {
-//         portraitInfo: null,
-//         portraitRadius: 196,
-//         iconWidth: 128,
-//         portraitContainerHeight: 512,
-//         closing: false,
-//     }
-//     const [skillsState, setSkillsState] = useState(defaultPortraitState);
-//     // const portraitCircleSmall = `circle(${defaultPortraitState.portraitRadius / 2}px at ${defaultPortraitState.portraitRadius / 2}px ${skillsState.portraitRadius / 2}px)`;
-//     // const portraitCircleLarge = `circle(${defaultPortraitState.portraitContainerHeight / 2}px at ${defaultPortraitState.portraitContainerHeight / 2}px center)`;
-//     const portraitCircleSmall = `circle(${defaultPortraitState.portraitRadius / 2}px at ${defaultPortraitState.portraitRadius / 2}px ${skillsState.portraitRadius / 2}px)`;
-//     const portraitCircleLarge = `circle(${defaultPortraitState.portraitContainerHeight / 2}px at ${defaultPortraitState.portraitContainerHeight / 2}px center)`;
-//     const defaultBgColor = "#606060";
-
-//     useEffect(() => {
-//         if (isIntro) {
-//             // intro animations here
-//         }
-//     });
-
-
-//     const onClose = () => {
-//         document.getElementById("portraitContainer").animate(
-//             {
-//                 opacity: [0],
-//             },
-//             {
-//                 duration: duration,
-//                 easeing: "ease",
-//                 fill: "forwards"
-//             }
-//         );
-
-//         setTimeout(() => {
-//             setSkillsState({ ...defaultPortraitState, portraitRadius: defaultPortraitState.portraitRadius, portraitContainerHeight: defaultPortraitState.portraitContainerHeight, closing: true });
-//         }, duration);
-//     }
-
-//     const onSkillClick = (skill) => {
-//         if (skill != skillsState.portraitInfo) {
-//             const elements = [
-//                 document.getElementById("portraitContainer"),
-//                 document.getElementById("portrait")
-//             ]
-//             for (const [i, element] of elements.entries()) {
-//                 element?.animate(
-//                     {
-//                         width: [`${defaultPortraitState.portraitContainerHeight}px`],
-//                         height: [`${defaultPortraitState.portraitContainerHeight}px`]
-//                     },
-//                     {
-//                         duration: duration,
-//                         easing: "ease",
-//                         fill: "forwards"
-//                     }
-//                 );
-//             }
-
-//             if (skill != skillsState.portraitInfo) {
-//                 document.getElementById("portraitContainer").animate(
-//                     {
-//                         opacity: [0],
-//                         shapeOutside: [portraitCircleLarge],
-//                         clipPath: [portraitCircleLarge]
-//                     },
-//                     {
-//                         duration: duration,
-//                         easeing: "ease",
-//                         fill: "forwards"
-//                     }
-//                 );
-//             }
-
-//             setTimeout(() => {
-//                 setSkillsState({
-//                     ...skillsState,
-//                     portraitInfo: skill,
-//                     portraitRadius: defaultPortraitState.portraitContainerHeight,
-//                     iconWidth: 64,
-//                 })
-//             }, duration);
-//         }
-//     }
-
-//     useEffect(() => {
-//         document.getElementById("portraitContainer").animate(
-//             {
-//                 opacity: [1]
-//             },
-//             {
-//                 duration: duration,
-//                 easeing: "ease",
-//                 fill: "forwards"
-//             }
-//         );
-//         if (skillsState.portraitInfo == null) {
-//             document.getElementById("portraitContainer").animate(
-//                 {
-//                     width: [`${defaultPortraitState.portraitRadius}px`],
-//                     height: [`${defaultPortraitState.portraitRadius}px`],
-//                     shapeOutside: [`circle(${defaultPortraitState.portraitRadius / 2}px at ${defaultPortraitState.portraitRadius / 2}px ${skillsState.portraitRadius / 2}px)`],
-//                     clipPath: [`circle(${defaultPortraitState.portraitRadius / 2}px at ${defaultPortraitState.portraitRadius / 2}px ${skillsState.portraitRadius / 2}px)`]
-//                 },
-//                 {
-//                     duration: duration,
-//                     easeing: "ease",
-//                     fill: "forwards"
-//                 }
-//             )
-//             document.getElementById("portrait").animate(
-//                 {
-//                     width: [`${defaultPortraitState.portraitRadius}px`],
-//                     height: [`${defaultPortraitState.portraitRadius}px`],
-//                 },
-//                 {
-//                     duration: duration,
-//                     easeing: "ease",
-//                     fill: "forwards"
-//                 }
-//             )
-//         }
-//     }, [skillsState.portraitInfo]);
-
-//     return (
-//         <Container className="" style={{ textAlign: "left" }}>
-//             <div id="portraitContainer" style={{
-//                 borderRadius: "50%",
-//                 minWidth: `${defaultPortraitState.portraitContainerHeight}px`,
-//                 minHeight: `${defaultPortraitState.portraitContainerHeight}px`,
-//                 width: skillsState.portraitContainerHeight,
-//                 height: skillsState.portraitContainerHeight,
-//                 float: "left",
-//                 shapeOutside: portraitCircleSmall,
-//                 clipPath: portraitCircleSmall,
-//             }}>
-//                 {
-//                     (skillsState.portraitInfo == null) ? (
-//                         <img id="portrait" src="portrait.jpg" className="" style={{
-//                             minWidth: `${defaultPortraitState.portraitRadius}px`,
-//                             minHeight: `${defaultPortraitState.portraitRadius}px`,
-//                             width: (skillsState.closing == true) ? defaultPortraitState.portraitContainerHeight : skillsState.portraitRadius,
-//                             height: (skillsState.closing == true) ? defaultPortraitState.portraitContainerHeight : skillsState.portraitRadius,
-//                         }} />
-//                     ) : (
-//                         <div style={{
-//                             width: defaultPortraitState.portraitContainerHeight,
-//                             height: defaultPortraitState.portraitContainerHeight,
-//                             display: "flex",
-//                             backgroundColor: (skills[skillsState.portraitInfo].color != null) ? skills[skillsState.portraitInfo].color : defaultBgColor,
-//                         }}>
-//                             <div style={{
-//                                 width: Math.sqrt((defaultPortraitState.portraitContainerHeight * defaultPortraitState.portraitContainerHeight) / 2),
-//                                 height: Math.sqrt((defaultPortraitState.portraitContainerHeight * defaultPortraitState.portraitContainerHeight) / 2),
-//                                 margin: "auto",
-//                                 textAlign: "left",
-//                             }}>
-//                                 <img src="x.png" className="cursor-pointer hover-grow" style={{ width: 30 }} onClick={onClose}></img>
-//                                 <SkillInfo skill={skillsState.portraitInfo} />
-//                             </div>
-//                         </div>
-//                     )
-//                 }
-//             </div>
-//             {
-//                 Object.keys(skills).map((skill) => {
-//                     if (skills[skill].isRoot === true) {
-//                         return (
-//                             <Skill skill={skill} onClick={onSkillClick} iconWidth={skillsState.iconWidth}></Skill>
-//                         )
-//                     }
-//                 })
-//             }
-//         </Container >
-//     );
-// }
-
-// export default Skills;

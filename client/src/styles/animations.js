@@ -1,5 +1,5 @@
 export const fadeIn = {
-    opacity: [0, 1]
+    opacity: [0, 1], 
 }
 export const fadeInOptions = {
     duration: 250,
@@ -16,9 +16,10 @@ export const fadeOutOptions = {
     fill: "forwards"
 }
 
+const scalePercent = 90;
 export const portraitSlideLeft = {
-    transform: ["translateX(0px)", "translateX(-50px)"],
-    opacity: [1, 0]
+    transform: ["translateX(0px)", `translateX(-50px) scale(${scalePercent}%)`],
+    opacity: [1, 0],
 }
 export const portraitSlideLeftOptions = {
     duration: fadeInOptions.duration,
@@ -28,7 +29,7 @@ export const portraitSlideLeftOptions = {
 
 const displacementAmount = 50;
 export const portraitAppearLeft = {
-    transform: [`translateX(${displacementAmount}px)`, `translateX(${0}px)`],
+    transform: [`translateX(${displacementAmount}px) scale(${scalePercent}%)` , `translateX(${0}px)`],
     opacity: [0, 1],
 }
 export const portraitAppearLeftOptions = {

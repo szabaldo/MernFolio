@@ -203,8 +203,7 @@ export const UdInfo = (
         <h3 className="text-center">Graduated 2021, GPA 3.6</h3>
         <br />
         <h3>Teaching Assistant</h3>
-        <h4>Intro to Computer Science II and Intro to Systems Engineering</h4>
-        {/* <h4>Intro to Systems Engineering</h4> */}
+        <h4>Intro to Computer Science II & Intro to Systems Engineering</h4>
         <ul>
             <li>Helped students understand the C programming language, shell scripting, and Linux/Unix basics</li>
             <li>Assisted students with lab assignments and core understanding of foundational programming concepts</li>
