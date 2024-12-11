@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, createElement } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import skills from './skills.json' with {type: 'json'};
 import { IntroContext } from './App.js';
@@ -8,12 +8,12 @@ import * as Anim from './styles/animations.js';
 import * as SkillInfo from './SkillInfo.js';
 
 function Skills({ headerState, setHeaderState }) {
-    const isIntro = useContext(IntroContext);
-    const [skillsState, setSkillsState] = useState({
-        portraitSlot: "portrait.jpg",
-        // selectedSkill: null,
+    const skillsRef = useRef({
         isPortrait: (window.innerWidth < window.innerHeight),
-    });
+        selectedSkill: null,
+    })
+    const isIntro = useContext(IntroContext);
+    const [skillsState, setSkillsState] = useState({ isPortrait: skillsRef.current.isPortrait });
     const skillsElements = Object.values(skills).map((skill) => {
         return (
             <Skill skill={skill.id} onClick={() => {
@@ -28,12 +28,16 @@ function Skills({ headerState, setHeaderState }) {
                     }
                 }
                 setTimeout(() => {
+                    const selectedSkill = skill.id;
+                    const portraitSlot = `skills/${skill.id}.png`;
                     setSkillsState({
                         ...skillsState,
-                        portraitSlot: `skills/${skill.id}.png`,
-                        selectedSkill: skill.id,
+                        portraitSlot: portraitSlot,
+                        selectedSkill: selectedSkill,
                         mainSkillSlideFlag: (skillsState.selectedSkill == null),
                     });
+                    skillsRef.current.selectedSkill = selectedSkill;
+                    skillsRef.current.portraitSlot = portraitSlot;
                     setHeaderState({ ...headerState, title: skill.title })
                 }, (skillsState.selectedSkill == null) ? Anim.fadeInOptions.duration : 0);
             }} iconWidth={64} />
@@ -41,7 +45,7 @@ function Skills({ headerState, setHeaderState }) {
     });
 
     useEffect(() => {
-        document.getElementById("portrait").src = skillsState.portraitSlot;
+        document.getElementById("portrait").src = (skillsState.portraitSlot == null) ? "portrait.jpg" : `skills/${skillsState.portraitSlot}.png`;
         if (isIntro.current) {
             const fadeInElements = [
                 document.getElementById("allSkillsRow")
@@ -50,7 +54,12 @@ function Skills({ headerState, setHeaderState }) {
                 element.animate(Anim.fadeIn, Anim.fadeInOptions)
             };
         }
-        window.addEventListener("resize", () => { setSkillsState({ ...skillsState, isPortrait: (window.innerWidth < window.innerHeight) }) }, false);
+        window.addEventListener("resize", () => {
+            if ((window.innerWidth < window.innerHeight) != skillsRef.current.isPortrait) {
+                skillsRef.current.isPortrait = (window.innerWidth < window.innerHeight);
+                setSkillsState({ ...skillsState, selectedSkill: skillsRef.current.selectedSkill, isPortrait: skillsRef.current.isPortrait });
+            }
+        }, false);
     }, []);
 
     const skillToInfo = (skill) => {
@@ -120,7 +129,7 @@ function Skills({ headerState, setHeaderState }) {
                 info = SkillInfo.PortfolioInfo;
                 break;
             default:
-                info = SkillInfo.NodeInfo;
+                info = SkillInfo.BrokenInfo;
         }
         return info;
     }
@@ -200,20 +209,22 @@ function Skills({ headerState, setHeaderState }) {
     return (
         <Container>
             {
-                (skillsState.selectedSkill == null)
+                (skillsRef.current.selectedSkill == null)
                     ? <SkillsDefault
                         headerState={headerState}
                         setHeaderState={setHeaderState}
                         skillsState={skillsState}
                         setSkillsState={setSkillsState}
+                        skillsRef={skillsRef}
                     />
                     : <SkillsInfo
-                        info={skillToInfo(skillsState.selectedSkill)}
-                        relatedSkills={skillToRelatedSkills(skillsState.selectedSkill)}
+                        info={skillToInfo(skillsRef.current.selectedSkill)}
+                        relatedSkills={skillToRelatedSkills(skillsRef.current.selectedSkill)}
                         headerState={headerState}
                         setHeaderState={setHeaderState}
                         skillsState={skillsState}
                         setSkillsState={setSkillsState}
+                        skillsRef={skillsRef}
                     />
             }
             <Row id="allSkillsRow" className="py-3" style={{ marginTop: 25 }}>
@@ -225,16 +236,19 @@ function Skills({ headerState, setHeaderState }) {
     );
 }
 
-function SkillsDefault({ headerState, setHeaderState, skillsState, setSkillsState }) {
+function SkillsDefault({ headerState, setHeaderState, skillsState, setSkillsState, skillsRef }) {
+    const isIntro = useContext(IntroContext);
     useEffect(() => {
-        const fadeInElements = [
-            document.getElementById("portrait"),
-            ...document.getElementsByClassName("main-skill"),
-            document.getElementById("allSkillsRow")
-        ];
-        for (let element of fadeInElements) {
-            element.animate(Anim.fadeIn, Anim.fadeInOptions)
-        };
+        if (isIntro.current) {
+            const fadeInElements = [
+                document.getElementById("portrait"),
+                ...document.getElementsByClassName("main-skill"),
+                document.getElementById("allSkillsRow")
+            ];
+            for (let element of fadeInElements) {
+                element.animate(Anim.fadeIn, Anim.fadeInOptions)
+            };
+        }
     });
 
     return (
@@ -251,18 +265,22 @@ function SkillsDefault({ headerState, setHeaderState, skillsState, setSkillsStat
                             element.animate(Anim.fadeOut, Anim.fadeOutOptions);
                         }
                         setTimeout(() => {
+                            const selectedSkill = "hii";
+                            const portraitSlot = "skills/hii.png";
                             setSkillsState({
                                 ...skillsState,
-                                portraitSlot: "skills/hii.png",
-                                selectedSkill: "hii",
-                                mainSkillSlideFlag: (skillsState.selectedSkill == null),
+                                portraitSlot: portraitSlot,
+                                selectedSkill: selectedSkill,
+                                mainSkillSlideFlag: (skillsRef.current.selectedSkill == null),
                             });
+                            skillsRef.current.selectedSkill = selectedSkill;
+                            skillsRef.current.portraitSlot = portraitSlot;
                             setHeaderState({ ...headerState, title: skills.hii.title })
                         }, Anim.fadeInOptions.duration);
                     }} skill="hii" iconWidth={128} />
                 </Col>
                 <Col className="text-center m-auto">
-                    <img id="portrait" src={skillsState.portraitSlot} style={{
+                    <img id="portrait" src={skillsRef.current.portraitSlot} style={{
                         maxWidth: 256,
                         maxHeight: 256,
                         borderRadius: "50%",
@@ -279,12 +297,16 @@ function SkillsDefault({ headerState, setHeaderState, skillsState, setSkillsStat
                             element.animate(Anim.fadeOut, Anim.fadeOutOptions);
                         }
                         setTimeout(() => {
+                            const selectedSkill = "ud";
+                            const portraitSlot = "skills/ud.png";
                             setSkillsState({
                                 ...skillsState,
-                                portraitSlot: "skills/ud.png",
-                                selectedSkill: "ud",
-                                mainSkillSlideFlag: (skillsState.selectedSkill == null),
+                                portraitSlot: portraitSlot,
+                                selectedSkill: selectedSkill,
+                                mainSkillSlideFlag: (skillsRef.current.selectedSkill == null),
                             });
+                            skillsRef.current.selectedSkill = selectedSkill;
+                            skillsRef.current.portraitSlot = portraitSlot;
                             setHeaderState({ ...headerState, title: skills.ud.title })
                         }, Anim.fadeInOptions.duration);
                     }} skill="ud" iconWidth={128} />
@@ -294,11 +316,11 @@ function SkillsDefault({ headerState, setHeaderState, skillsState, setSkillsStat
     );
 }
 
-function SkillsInfo({ info, relatedSkills, headerState, setHeaderState, skillsState, setSkillsState }) {
+function SkillsInfo({ info, relatedSkills, headerState, setHeaderState, skillsState, setSkillsState, skillsRef }) {
     const relatedSkillsElements = Object.values(relatedSkills).map((skill) => {
         return (
             <Skill skill={skill.id} onClick={() => {
-                if (skillsState.selectedSkill == null) {
+                if (skillsRef.current.selectedSkill == null) {
                     document.getElementById("portrait").animate(Anim.portraitSlideLeft, Anim.portraitSlideLeftOptions);
                     const fadeOutElements = [
                         ...document.getElementsByClassName("main-skill"),
@@ -309,38 +331,30 @@ function SkillsInfo({ info, relatedSkills, headerState, setHeaderState, skillsSt
                     }
                 }
                 setTimeout(() => {
+                    const selectedSkill = skill.id;
+                    const portraitSlot = `skills/${skill.id}.png`;
                     setSkillsState({
                         ...skillsState,
-                        portraitSlot: `skills/${skill.id}.png`,
-                        selectedSkill: skill.id,
-                        mainSkillSlideFlag: (skillsState.selectedSkill == null),
+                        portraitSlot: portraitSlot,
+                        selectedSkill: selectedSkill,
+                        mainSkillSlideFlag: (skillsRef.current.selectedSkill == null),
                     });
+                    skillsRef.current.selectedSkill = selectedSkill; 
+                    skillsRef.current.portraitSlot = portraitSlot;
                     setHeaderState({ ...headerState, title: skill.title })
-                }, (skillsState.selectedSkill == null) ? Anim.fadeInOptions.duration : 0);
+                }, (skillsRef.current.selectedSkill == null) ? Anim.fadeInOptions.duration : 0);
             }} iconWidth={64} />
         )
     });
 
     useEffect(() => {
         if (skillsState.mainSkillSlideFlag == true) {
-            // document.getElementById("portrait").animate(Anim.portraitAppearLeft, Anim.portraitAppearLeftOptions);
             const appearLeftElements = [
-                // document.getElementById("related-skills"),
                 document.getElementById("portrait")
             ];
             for (let element of appearLeftElements) {
                 element.animate(Anim.portraitAppearLeft, Anim.portraitAppearLeftOptions)
             };
-            // document.getElementById("portraitContainer").animate(
-            //     {
-            //         maxWidth: ["1000px", `${skillIconWidth}px`]
-            //     },
-            //     {
-            //         duration: Anim.fadeInOptions.duration,
-            //         easing: "ease-in",
-            //         fill: "forwards"
-            //     }
-            // );
             const fadeInElements = [
                 ...document.getElementsByClassName("related-skills"),
                 document.getElementById("allSkillsRow")
@@ -362,23 +376,23 @@ function SkillsInfo({ info, relatedSkills, headerState, setHeaderState, skillsSt
 
     const maxHeight = skillsState.isPortrait ? 256 : 512;
     const skillIconWidth = 256;
-    const infoInnerWidth = skillIconWidth * 3 / 4; 
+    const infoInnerWidth = skillIconWidth * 3 / 4;
     return (
         <>
             <Row className="mb-3 py-3 justify-content-between">
                 <Col id="portraitContainer" style={{
                     maxHeight: maxHeight,
-                    maxWidth: skillsState.isPortrait ? skillIconWidth : "revert",
+                    maxWidth: skillsState.isPortrait ? skillIconWidth : "fit-content",
                     paddingLeft: 0,
                     paddingRight: 0,
                     overflowX: "hidden",
                 }}>
-                    <img id="portrait" src={skillsState.portraitSlot} style={skillsState.isPortrait ? {
+                    <img id="portrait" src={skillsRef.current.portraitSlot} style={skillsRef.current.isPortrait ? {
                         width: skillIconWidth,
                         height: skillIconWidth,
                         overflow: "hidden",
                         borderRadius: "10%",
-                        position: "relative", 
+                        position: "relative",
                         zIndex: 5,
                     } : {
                         maxWidth: skillIconWidth,
@@ -389,12 +403,11 @@ function SkillsInfo({ info, relatedSkills, headerState, setHeaderState, skillsSt
                         marginLeft: 25,
                         marginRight: 25,
                     }} />
-                    {skillsState.isPortrait ? null : info}
+                    {skillsRef.current.isPortrait ? <></> : info}
                 </Col>
-                {/* <Col md={skillsState.isPortrait ? "unset" : "auto"} className="d-flex flex-column" style={{ */}
                 <Col className="d-flex flex-column" style={{
                     maxHeight: maxHeight,
-                    maxWidth: skillsState.isPortrait ? "none" : `${infoInnerWidth}px`
+                    maxWidth: skillsRef.current.isPortrait ? "none" : `${infoInnerWidth}px`
                 }}>
                     <h3 className="large-text text-center">Related Skills</h3>
                     <div className="related-skills d-flex flex-wrap" style={{
@@ -402,7 +415,6 @@ function SkillsInfo({ info, relatedSkills, headerState, setHeaderState, skillsSt
                         overflowX: "hidden",
                         overflowY: "auto",
                         maxHeight: `${maxHeight - 28 - 8}px`,
-                        // maxWidth: skillsState.isPortrait ? `null` : `${infoInnerWidth}px`
                     }}>
                         {relatedSkillsElements}
                     </div>
@@ -412,83 +424,10 @@ function SkillsInfo({ info, relatedSkills, headerState, setHeaderState, skillsSt
                 <Row className="py-5" style={{}}>
                     {info}
                 </Row>
-            ) : (<></>)
+            ) : <></>
             }
         </>
     );
-
-
-    // return ((skillsState.isPortrait) ? (<>
-    //     <Row className="py-3 mb-3">
-    //         <Col md="auto" id="portraitContainer" style={{
-    //             maxHeight: maxHeight,
-    //             paddingLeft: 0,
-    //             paddingRight: 0,
-    //             overflowX: "hidden",
-    //         }}>
-    //             <img id="portrait" src={skillsState.portraitSlot} style={{
-    //                 width: skillIconWidth,
-    //                 height: skillIconWidth,
-    //                 overflow: "hidden",
-    //                 // float: "left",
-    //                 borderRadius: "10%",
-    //                 marginLeft: 25,
-    //                 marginRight: 25,
-    //             }} />
-    //         </Col>
-    //         <Col className="d-flex flex-column" style={{
-    //             maxHeight: maxHeight,
-    //         }}>
-    //             <h3 className="large-text text-center">Related Skills</h3>
-    //             <div className="related-skills d-flex flex-wrap" style={{
-    //                 justifyContent: "center",
-    //                 overflowX: "hidden",
-    //                 overflowY: "auto",
-    //                 maxHeight: `${maxHeight - 28 - 8}px`,
-    //                 // maxWidth: `${192}px`
-    //             }}>
-    //                 {relatedSkillsElements}
-    //             </div>
-    //         </Col>
-    //     </Row>
-    //     <Row className="my-3" style={{}}>
-    //         {info}
-    //     </Row>
-    // </>) : (<>
-    //     <Row className="py-3 justify-content-between">
-    //         <Col id="portraitContainer" style={{
-    //             maxHeight: maxHeight,
-    //             paddingLeft: 0,
-    //             paddingRight: 0,
-    //             overflowY: "auto",
-    //         }}>
-    //             <img id="portrait" src={skillsState.portraitSlot} style={{
-    //                 maxWidth: skillIconWidth,
-    //                 maxHeight: skillIconWidth,
-    //                 overflow: "hidden",
-    //                 float: "left",
-    //                 borderRadius: "10%",
-    //                 marginLeft: 25,
-    //                 marginRight: 25,
-    //             }} />
-    //             {info}
-    //         </Col>
-    //         <Col md="auto" style={{
-    //             maxHeight: maxHeight,
-    //         }}>
-    //             <h3 className="large-text text-center">Related Skills</h3>
-    //             <div className="related-skills d-flex flex-wrap" style={{
-    //                 justifyContent: "center",
-    //                 overflowX: "hidden",
-    //                 overflowY: "auto",
-    //                 maxHeight: `${maxHeight - 28 - 8}px`,
-    //                 maxWidth: `${192}px`
-    //             }}>
-    //                 {relatedSkillsElements}
-    //             </div>
-    //         </Col>
-    //     </Row>
-    // </>));
 }
 
 export default Skills;

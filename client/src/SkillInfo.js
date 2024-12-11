@@ -363,3 +363,13 @@ export const PortfolioInfo = (
         </Row>
     </Container>
 );
+
+export const BrokenInfo = (
+    <Container>
+        <Row className="py-1">
+            <h2 className="large-text d-flex justify-content-center">EVERYTHING'S BROKEN</h2>
+            <br />
+            <p className="medium-text d-flex justify-content-center">AHHHHHHHHHHHHHHHHHHHH!!!!!!!!!!!</p>
+        </Row>
+    </Container>
+);
